@@ -1,0 +1,80 @@
+# AGENTS.md
+
+This file is durable project memory for human maintainers and orchestrator agents.
+
+## Mission
+
+Build **Kuşluk**, a local-first, print-first personal daily newspaper that turns a user's day, interests, and trusted information sources into a concise morning edition.
+
+The project must remain useful when the original user, original conversation, original LLM provider, or original integration disappears.
+
+## Non-negotiable product principles
+
+1. **Local-first personal data plane.** Personal data remains on infrastructure controlled by the user by default.
+2. **Print-first.** The physical morning edition is the primary product surface.
+3. **One DIN A4 sheet by default.** Prefer duplex; allow single-sided fallback when hardware cannot duplex.
+4. **08:00 local target.** The edition should be ready by 08:00 local time unless the user configures another time.
+5. **Selection over collection.** The product is an editor, not a feed reader.
+6. **Reliability before cleverness.** A modest edition that arrives is better than a brilliant edition that fails.
+7. **Provider independence.** LLM, search, social, mail, calendar, weather, printer, and delivery systems are adapters.
+8. **Deterministic rendering.** Generative systems may prepare content, but layout validation and printing must be deterministic.
+9. **Graceful degradation.** Missing data removes or replaces a block; it must never create silent holes or corrupt layout.
+10. **No recurring manual data labour.** Personalisation may ask for initial preferences, but must not depend on routine manual exports, tagging, or curation.
+11. **Serendipity is intentional.** Protect space for material outside the user's existing interest bubble.
+12. **Archive is first-class.** Editions and stories need stable identifiers and durable references.
+
+## Documentation precedence
+
+When documents conflict, resolve in this order:
+
+1. Accepted ADRs under `docs/adr/`
+2. `docs/REQUIREMENTS.md`
+3. `docs/PRODUCT.md`
+4. `docs/ARCHITECTURE.md`
+5. `docs/EDITORIAL_SYSTEM.md`
+6. `docs/DESIGN_BRIEF.md`
+7. `docs/ROADMAP.md` and implementation backlog
+
+Do not silently reinterpret a recorded decision. Propose a new ADR when changing architecture or a non-trivial product invariant.
+
+## Working method
+
+Use vertical slices. Prefer a working bicycle over disconnected car parts.
+
+For each stage:
+- state the user-visible outcome;
+- define acceptance criteria;
+- implement the smallest end-to-end path;
+- test with real editions;
+- record what changed and why;
+- only then deepen integrations.
+
+## Stage 1 boundary
+
+The first implementation must prove:
+
+`real inputs -> normalized candidates -> publication model -> deterministic A4 HTML -> PDF -> printer/digital fallback -> archive`
+
+Do not build a broad agent platform before this loop exists.
+
+## Privacy boundary
+
+Public information may be researched externally. Personal context must not be sent to third-party services unless a connector explicitly needs the minimum required subset and the user has configured it.
+
+A future managed-cloud product is allowed, but it is a separate operating mode with its own privacy/compliance obligations. Do not weaken local-first defaults to make managed hosting easier.
+
+## Upstream reuse
+
+Reuse permissively licensed upstream components when they save time, but:
+- preserve Kuşluk's product and editorial layer;
+- record reused code or substantial adapted material in `THIRD_PARTY_NOTICES.md`;
+- preserve required copyright/license notices;
+- do not make an upstream project a hard product dependency without an ADR.
+
+## Naming
+
+Repository: `kushluk`
+
+Product working name: **Kuşluk**
+
+The name may change later. Do not block implementation on branding.
