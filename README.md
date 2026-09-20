@@ -18,6 +18,7 @@ Kuşluk is being developed as an open, provider-independent system rather than a
 - **Provider-independent user model.** The project must survive changes in LLM, search, social, mail, calendar, or printing providers.
 - **Deterministic publication pipeline.** AI can research, rank, and write; rendering and print validation must remain deterministic.
 - **Graceful degradation.** Missing integrations must not produce empty layout holes or silently broken editions.
+- **Source discovery.** Connected accounts can help Kuşluk discover information sources the user already chose, such as newsletters, while keeping final source selection explicit.
 
 ## Current status
 
@@ -34,6 +35,7 @@ Start with:
 - [docs/EDITORIAL_SYSTEM.md](docs/EDITORIAL_SYSTEM.md)
 - [docs/DESIGN_BRIEF.md](docs/DESIGN_BRIEF.md)
 - [docs/DATA_MAP.md](docs/DATA_MAP.md)
+- [docs/ONBOARDING.md](docs/ONBOARDING.md)
 - [docs/ROADMAP.md](docs/ROADMAP.md)
 - [docs/STAGE_1_BACKLOG.md](docs/STAGE_1_BACKLOG.md)
 - [docs/adr/](docs/adr/)
