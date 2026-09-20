@@ -46,6 +46,22 @@ Personalisation should come from low-effort or passive signals:
 
 Recurring manual tagging, manual exports, or daily preference maintenance are not acceptable foundations.
 
+### Recovering value from existing subscriptions
+
+A user's inbox already contains editorial choices they made outside Kuşluk.
+
+When email is explicitly connected, onboarding should help discover likely newsletters and recurring editorial mail, then ask the user how each source should participate in Kuşluk.
+
+A newsletter may be:
+- ignored;
+- used only as a source/candidate signal;
+- transformed into Kuşluk-native summaries or derivatives;
+- included more directly in the user's private personal edition.
+
+The purpose is not generic email summarisation. It is to recover value from newsletters the user already chose to receive but may not have time to read.
+
+See `ONBOARDING.md` and ADR 0012.
+
 ## Editorial character
 
 - factual core;
