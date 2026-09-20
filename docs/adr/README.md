@@ -29,3 +29,4 @@ Current accepted set:
 - 0009 User model is provider-independent
 - 0010 Edition archive is first-class
 - 0011 Reuse upstream infrastructure while preserving the product layer
+- 0012 Newsletter discovery is explicit and source-specific
