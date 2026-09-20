@@ -50,6 +50,24 @@ The architecture **SHOULD** support later:
 - X content **SHOULD** be supported early because it is a desired input, but the integration **MUST** remain isolated from the canonical editorial model.
 - External AI briefings **MAY** suggest candidates but **MUST NOT** be treated as authoritative sources without verification.
 
+### Newsletter discovery and use
+
+- Email/newsletter ingestion **MUST** require an explicitly connected email account.
+- Newsletter discovery **SHOULD** inspect only a bounded recent mailbox window rather than indexing the entire mailbox.
+- Discovery/classification **SHOULD** occur inside the user's personal data plane by default.
+- Detected newsletters **MUST** be presented to the user before becoming persistent editorial sources.
+- A user **MUST** be able to select a per-newsletter mode.
+- Supported modes **SHOULD** include at least:
+  - Ignore;
+  - Reference only / use as a source signal;
+  - Derivative / editorial synthesis;
+  - Personal-copy / direct inclusion.
+- Newly detected newsletters **MUST NOT** silently become trusted sources.
+- Newsletter-derived items **MUST** retain attribution and an original source/message reference where technically possible.
+- Direct inclusion **MUST NOT** be treated as permission to publicly redistribute a publisher's content.
+- Shared/public/managed publication modes **MUST** apply stricter reuse rules than a user's private local edition.
+- A newsletter subscription **MUST NOT** guarantee a print slot; the normal editorial cut/ranking system still applies.
+
 ## Personalisation
 
 - A user **MUST** be able to declare initial interests/beats.
