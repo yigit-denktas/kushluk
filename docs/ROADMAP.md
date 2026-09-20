@@ -13,6 +13,7 @@ Deliverables:
 - Editorial System
 - Design Brief
 - Data Map
+- Onboarding
 - Failure Matrix
 - ADRs
 - Stage 1 backlog
@@ -60,6 +61,8 @@ The system makes correct print-vs-digital decisions for normal home and travel s
 
 Add:
 - durable provider-independent interest model;
+- newsletter discovery from a bounded connected-mailbox window;
+- per-newsletter source modes: ignore, reference/source, derivative, private direct inclusion;
 - connected newsletters;
 - RSS bundles;
 - X/social connector;
@@ -68,7 +71,7 @@ Add:
 - passive privacy-preserving learning.
 
 Definition of Done:
-Two materially different user profiles produce meaningfully different editions without recurring manual curation.
+Two materially different user profiles produce meaningfully different editions without recurring manual curation, and an existing newsletter diet can be converted into explicit source configuration without manually entering every subscription.
 
 ## Stage 3.5 — Editorial intelligence
 
@@ -102,6 +105,7 @@ A run of editions looks unmistakably like the same publication across supported 
 
 Add:
 - onboarding/configuration;
+- newsletter discovery/review UI;
 - install packaging;
 - connector setup;
 - self-hosting docs;
@@ -113,7 +117,7 @@ Add:
 Managed cloud, if pursued, receives its own privacy/security/product track.
 
 Definition of Done:
-A new user can install Kuşluk, connect supported services, and produce an edition without editing source code.
+A new user can install Kuşluk, connect supported services, review discovered sources, and produce an edition without editing source code.
 
 ## Open investigations
 
@@ -121,7 +125,7 @@ A new user can install Kuşluk, connect supported services, and produce an editi
 - upstream permissively licensed print-briefing projects;
 - home-printer paper stocks and supported grammage;
 - long-term printer upgrade path, especially monochrome laser/duplex;
-- exact newsletter ingestion strategy;
+- newsletter detection precision and provider-specific mail APIs;
 - delivery channels beyond email;
 - e-reader packaging;
 - motion/animated digital edition semantics.
