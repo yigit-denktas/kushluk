@@ -17,7 +17,8 @@ Examples:
 - printer;
 - paper profile;
 - delivery channels;
-- pause/travel behaviour.
+- pause/travel behaviour;
+- per-newsletter source modes and priorities.
 
 Retention: until user changes/deletes it.
 
@@ -38,9 +39,29 @@ Prefer event/task metadata and bounded retrieval windows.
 Do not build a permanent calendar corpus unless a feature explicitly requires it.
 
 ### 4. Email/newsletters
+
 Separate:
 - operational email metadata/signals;
+- discovered newsletter/source inventory;
 - newsletter content intentionally used as editorial source.
+
+Newsletter discovery should be incremental and bounded.
+
+A discovered newsletter source record may contain:
+- sender/publication identity;
+- sender address/domain;
+- mailing-list identifiers where available;
+- recent delivery/frequency metadata;
+- classification confidence;
+- user-selected source mode;
+- user-selected priority;
+- original message/source references.
+
+Raw newsletter bodies should not be retained indefinitely by default.
+
+For derivative mode, retain only what is needed for provenance, deduplication, archive references, and reproducibility.
+
+For personal-copy/direct-inclusion mode, raw content may be processed locally for the user's private edition, but this must not be treated as public redistribution permission.
 
 Do not mirror the user's entire mailbox into Kuşluk by default.
 
@@ -122,10 +143,14 @@ Personal information may leave the device only when:
 
 Derived personal state remains sensitive even when it is not raw source data.
 
+Newsletter contents are personal mailbox data even when the underlying newsletter is publicly available elsewhere. Prefer local parsing/classification and minimum necessary external disclosure.
+
 ## Deletion
 
 Users must be able to remove:
 - credentials;
+- discovered newsletter/source inventory;
+- retained newsletter content;
 - source caches;
 - user model;
 - edition archive;
