@@ -66,6 +66,4 @@ def publication_markdown(publication: Publication) -> str:
         lines.append("")
     if publication.notes:
         lines.extend(["## Notes", ""] + [f"- {note}" for note in publication.notes])
-    return "
-".join(lines).rstrip() + "
-"
+    return "\n".join(lines).rstrip() + "\n"
