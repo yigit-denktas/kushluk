@@ -66,13 +66,14 @@
     }
     .stories {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 4mm;
       flex: 1;
     }
     article { border-top: 0.3mm solid var(--ink); padding-top: 2mm; }
-    article:first-child h2 { font-size: 22pt; line-height: .95; }
-    h2 { font-size: 13.5pt; line-height: 1.05; margin: 0 0 2mm; }
+    article.lead { grid-column: span 2; }
+    article.lead h2 { font-size: 22pt; line-height: .95; }
+    h2 { font-size: 15pt; line-height: 1.05; margin: 0 0 2mm; }
     .deck { margin: 0 0 2mm; }
     .source { font: 6.4pt Arial, Helvetica, sans-serif; color: var(--muted); }
     footer {
@@ -128,11 +129,12 @@
   <div class="section-label"><span class="sun"></span>For You</div>
   <section class="stories">
     {% for story in publication.stories %}
-    <article>
+    <article class="{% if publication.lead_story_id == story.id %}lead{% endif %}">
       <h2>{{ story.headline }}</h2>
       <p class="deck">{{ story.deck }}</p>
       <div class="source">
         {{ story.source_name }}
+        {% if story.cluster_size > 1 %} · {{ story.cluster_size }} reports{% endif %}
         {% if story.source_url %} · {{ story.source_url }}{% endif %}
       </div>
     </article>

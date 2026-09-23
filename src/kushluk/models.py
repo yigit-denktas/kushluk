@@ -46,6 +46,14 @@ class Candidate:
 
 
 @dataclass(slots=True)
+class StoryCluster:
+    id: str
+    representative_id: str
+    candidate_ids: list[str]
+    source_names: list[str]
+
+
+@dataclass(slots=True)
 class PracticalItem:
     label: str
     value: str
@@ -61,6 +69,7 @@ class Story:
     source_name: str
     source_url: str | None = None
     why_selected: str | None = None
+    cluster_size: int = 1
 
 
 @dataclass(slots=True)
@@ -88,6 +97,7 @@ class Publication:
     location_name: str
     practical: list[PracticalItem]
     stories: list[Story]
+    lead_story_id: str | None = None
     notes: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from datetime import date
 
+from kushluk.archive import list_editions
 from kushluk.config import Settings
 from kushluk.pipeline import run_pipeline
 
@@ -31,15 +32,20 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Send email only if requested printing fails",
     )
+
+    archive = sub.add_parser("archive-list", help="List recent local Kuşluk editions")
+    archive.add_argument("--limit", type=int, default=20)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    settings = Settings.from_env()
+
     if args.command == "generate":
         target = date.fromisoformat(args.target_date) if args.target_date else date.today()
         result = run_pipeline(
-            Settings.from_env(),
+            settings,
             target_date=target,
             make_pdf=not args.no_pdf,
             send_to_printer=args.send_to_printer,
@@ -64,6 +70,15 @@ def main(argv: list[str] | None = None) -> int:
             or (result.email_result is not None and result.email_result.status == "failed")
         )
         return 2 if failed_delivery else 0
+
+    if args.command == "archive-list":
+        for item in list_editions(settings.archive_dir, limit=max(1, args.limit)):
+            print(
+                f"{item['edition_id']} · {item.get('target_date') or '?'} · "
+                f"{item.get('location_name') or '?'} · {item['path']}"
+            )
+        return 0
+
     return 1
 
 

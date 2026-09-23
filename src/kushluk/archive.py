@@ -32,3 +32,32 @@ def archive_publication(
     if pdf_path and pdf_path.exists():
         (edition_dir / "edition.pdf").write_bytes(pdf_path.read_bytes())
     return edition_dir
+
+
+def list_editions(archive_root: Path, limit: int = 20) -> list[dict[str, Any]]:
+    if not archive_root.exists():
+        return []
+    editions: list[dict[str, Any]] = []
+    for directory in sorted(
+        (path for path in archive_root.iterdir() if path.is_dir()),
+        key=lambda path: path.name,
+        reverse=True,
+    ):
+        metadata = directory / "metadata.json"
+        if not metadata.exists():
+            continue
+        try:
+            payload = json.loads(metadata.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        editions.append(
+            {
+                "edition_id": payload.get("edition_id", directory.name),
+                "target_date": payload.get("target_date"),
+                "location_name": payload.get("location_name"),
+                "path": str(directory),
+            }
+        )
+        if len(editions) >= limit:
+            break
+    return editions
