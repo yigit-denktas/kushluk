@@ -1,0 +1,6 @@
+{
+  "events": [
+    {"time": "09:30", "title": "Morning focus block", "location": "Home"},
+    {"time": "14:00", "title": "Project review", "location": "Calendar fixture"}
+  ]
+}
