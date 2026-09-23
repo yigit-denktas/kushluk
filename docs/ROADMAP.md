@@ -4,6 +4,8 @@ Kuşluk uses iterative vertical slices rather than a long waterfall build.
 
 ## Stage 0 — Define the product
 
+Status: **implementation-ready**
+
 Goal: preserve intent before implementation.
 
 Deliverables:
@@ -18,41 +20,51 @@ Deliverables:
 - ADRs
 - Stage 1 backlog
 - Third-party reuse policy
+- Open-decisions register
 
 Definition of Done:
 A future maintainer/orchestrator can explain what Kuşluk is, what it is not, the non-negotiable decisions, and the next executable slice without relying on the founding conversation.
 
 ## Stage 1 — Walking skeleton
 
+Status: **ACTIVE — software path exists; real local proof pending**
+
 Goal: print one real edition end to end.
 
-Minimum path:
+Implemented path:
 - Köln/default weather;
-- calendar fixture, then real calendar;
-- three real public stories from a simple open source/RSS path;
-- optional X/Grok experiment behind a connector seam;
-- canonical candidate model;
-- inspectable ranking;
+- generic ICS calendar with fixture fallback;
+- real RSS/Atom stories;
+- canonical candidate and story-cluster models;
+- inspectable deterministic ranking;
 - publication Markdown/metadata;
 - deterministic A4 HTML;
-- PDF validation;
-- CUPS printing;
-- digital fallback;
-- archive.
+- PDF page validation and editorial cut/retry;
+- CUPS capability detection and printing;
+- SMTP digital delivery/fallback;
+- archive and run summary;
+- runtime doctor;
+- CI smoke test.
+
+Remaining proof:
+- configure a real private calendar/task source;
+- run on the chosen local host;
+- reach the real printer;
+- complete at least five real editions;
+- tune from observed failures/read behaviour.
 
 Definition of Done:
-One command produces a real morning edition with no manual HTML editing, and the system successfully produces multiple test editions.
+One command produces a real morning edition with no manual HTML editing, the local print/digital path works in the actual environment, and multiple real editions have been completed.
 
 ## Stage 2 — Understand the day
 
 Add:
-- real calendar/task intelligence;
+- richer calendar/task intelligence;
 - robust travel-state detection;
 - travel-aware destination weather;
-- email fallback;
 - pause/snooze controls;
-- better printer state checks;
-- typed failure notifications.
+- stronger device-specific printer-state handling;
+- user-facing typed failure notifications.
 
 Definition of Done:
 The system makes correct print-vs-digital decisions for normal home and travel scenarios and degrades cleanly when key context is missing.
@@ -76,8 +88,7 @@ Two materially different user profiles produce meaningfully different editions w
 ## Stage 3.5 — Editorial intelligence
 
 Add:
-- better clustering;
-- source diversity;
+- richer clustering/source diversity;
 - claim verification;
 - continuity across editions;
 - story threads;
@@ -122,7 +133,6 @@ A new user can install Kuşluk, connect supported services, review discovered so
 ## Open investigations
 
 - exact X/Grok Bot capabilities, costs, and reliability;
-- upstream permissively licensed print-briefing projects;
 - home-printer paper stocks and supported grammage;
 - long-term printer upgrade path, especially monochrome laser/duplex;
 - newsletter detection precision and provider-specific mail APIs;

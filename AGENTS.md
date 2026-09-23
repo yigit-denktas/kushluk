@@ -53,22 +53,24 @@ For each stage:
 
 ## Current implementation
 
-Stage 1 is active.
+Stage 1 is active and the software walking skeleton is executable.
 
-The repository now contains a runnable Python walking skeleton with:
-- Open-Meteo weather;
-- configurable RSS/Atom ingestion;
-- calendar fixture;
-- canonical models;
-- deterministic ranking/deduplication;
-- Markdown publication output;
-- A4 HTML rendering;
-- optional WeasyPrint PDF;
-- CUPS/`lp` adapter;
-- local archive;
-- tests and CI.
+Current path:
 
-The remaining Stage 1 work is validation/cut-loop, live personal connector replacement, digital fallback, and real-world print trials.
+`Open-Meteo + ICS/fixture calendar + RSS -> canonical candidates -> clustering/ranking -> publication -> A4 HTML -> optional validated PDF -> CUPS/SMTP -> archive`
+
+Implemented infrastructure includes:
+- typed failures and run summaries;
+- deterministic story clustering and ranking;
+- optional lead support with no forced lead;
+- one-page PDF validation and editorial cut/retry;
+- printer capability/duplex detection;
+- SMTP delivery and print-failure fallback;
+- archive listing;
+- runtime doctor;
+- CI lint/tests plus an end-to-end smoke test.
+
+Do not claim Stage 1 is finished until a real local print path and repeated real-edition trial have been completed.
 
 ## Stage 1 boundary
 
@@ -76,13 +78,19 @@ The implementation must prove:
 
 `real inputs -> normalized candidates -> publication model -> deterministic A4 HTML -> PDF -> printer/digital fallback -> archive`
 
-Do not build a broad agent platform before this loop exists.
+The code path now exists. Remaining proof depends mainly on real local connectors, printer access, and repeated usage.
+
+Do not build a broad agent platform before this loop is proven in reality.
 
 ## Privacy boundary
 
 Public information may be researched externally. Personal context must not be sent to third-party services unless a connector explicitly needs the minimum required subset and the user has configured it.
 
 A future managed-cloud product is allowed, but it is a separate operating mode with its own privacy/compliance obligations. Do not weaken local-first defaults to make managed hosting easier.
+
+Calendar URLs may contain private tokens; do not persist full private ICS URLs into edition/source metadata.
+
+SMTP credentials belong in environment/runtime secret storage, never Git.
 
 ## Upstream reuse
 
@@ -93,6 +101,12 @@ Reuse permissively licensed upstream components when they save time, but:
 - do not make an upstream project a hard product dependency without an ADR.
 
 See `docs/UPSTREAM_REVIEW.md` before introducing a new upstream dependency.
+
+## Stop conditions / decisions
+
+Do not make choices recorded in `docs/OPEN_DECISIONS.md` on the user's behalf.
+
+External credentials, a local deployment host, and physical printer access are setup prerequisites rather than reasons to redesign the architecture.
 
 ## Naming
 

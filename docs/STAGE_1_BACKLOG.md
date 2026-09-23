@@ -4,66 +4,69 @@
 
 Produce a real DIN A4 Kuşluk edition end to end with no hand-edited HTML.
 
-Status: **ACTIVE**
+Status: **ACTIVE — software walking skeleton implemented; real-world proof pending**
 
-## Epic 1 — Repository foundation — IN PROGRESS
+## Epic 1 — Repository foundation — DONE (v0)
 
 Implemented:
 - Python project structure;
-- configuration model;
-- `.env.example`;
+- environment configuration;
 - local output/archive paths;
 - test harness;
 - Ruff/pytest CI;
-- manually dispatchable sample-edition workflow.
+- current official checkout/setup-python Actions;
+- end-to-end smoke test;
+- manually dispatchable sample-edition workflow;
+- runtime `kushluk doctor`.
 
-Remaining:
-- verify CI green on GitHub after each dependency/workflow change;
-- improve install/runtime error messages as real environments expose them.
+Remaining work is operational hardening discovered through real installations.
 
-## Epic 2 — Canonical models — IN PROGRESS
+## Epic 2 — Canonical models — DONE (v0)
 
 Implemented:
 - SourceRef;
 - Candidate;
+- StoryCluster;
 - PracticalItem;
 - Story;
 - Publication;
+- typed Failure;
+- DeliveryResult;
 - stable edition identity.
 
-Remaining:
-- explicit StoryCluster model;
-- typed Failure model;
-- richer DeliveryResult;
-- schema/versioning once real connectors begin producing durable archives.
+Future:
+- explicit long-term metadata schema versioning once archive compatibility needs it.
 
 ## Epic 3 — Initial connectors — IN PROGRESS
 
 Implemented:
 - Open-Meteo weather;
-- calendar fixture;
-- configurable RSS/Atom connector.
+- generic ICS calendar;
+- fixture fallback calendar;
+- configurable RSS/Atom connector;
+- source-specific typed failure reporting.
 
-Remaining:
-- live calendar connector;
-- task connector;
-- source-specific error typing;
-- optional X/Grok experiment behind a connector seam.
+Still external/provider-dependent:
+- native personal calendar provider auth if preferred over ICS;
+- task provider connector;
+- optional X/Grok connector.
 
-Acceptance remains: each connector must fail independently without breaking unrelated connectors.
+Acceptance remains: each connector fails independently without breaking unrelated connectors.
 
 ## Epic 4 — Normalisation and ranking — IN PROGRESS
 
 Implemented:
 - canonical candidate conversion;
-- title-level deduplication;
-- explainable deterministic ranking v0.
+- deterministic URL/title story clustering;
+- ranking v0;
+- source-cluster count;
+- inspectable selection reason;
+- optional-lead layout support without forcing a lead.
 
-Remaining:
-- story clustering beyond title normalization;
-- stronger source-quality inputs;
-- optional lead decision;
-- protected serendipity slot.
+Still requires richer source data:
+- stronger source-quality signals;
+- meaningful serendipity selection across heterogeneous sources;
+- later editorial tuning from real reading behaviour.
 
 ## Epic 5 — Publication model — IN PROGRESS
 
@@ -72,86 +75,100 @@ Implemented:
 - Today / For You surfaces;
 - source references;
 - edition ID;
-- JSON archive metadata.
+- JSON archive metadata;
+- run/failure summary.
 
-Remaining:
+Future:
 - explicit metadata schema version;
-- QR/link representation in the canonical model;
-- prior-edition/story references.
+- first-class cross-edition/story references;
+- QR continuation representation once production design is frozen.
 
 ## Epic 6 — Deterministic renderer — IN PROGRESS
 
 Implemented:
 - Jinja2 A4 HTML template;
 - print CSS;
+- balanced layout by default;
+- optional lead class;
 - monochrome-safe warm editorial v0;
 - optional WeasyPrint PDF rendering.
 
-Remaining:
-- front/back duplex templates;
-- paper profile tokens;
-- stronger production design implementation;
-- print-geometry regression fixtures.
+Blocked/decision-dependent:
+- final production typography;
+- final A4-vs-A3-gatefold physical system;
+- final front/back production templates.
 
-## Epic 7 — Validation and cut loop — NOT STARTED
-
-Validate:
-- expected page count;
-- overflow;
-- minimum readable type sizes;
-- required blocks;
-- basic link integrity.
-
-Overflow must trigger editorial cuts/rerendering rather than uncontrolled font shrinking.
-
-## Epic 8 — Printing — IN PROGRESS
+## Epic 7 — Validation and cut loop — DONE (v0)
 
 Implemented:
-- CUPS/`lp` adapter boundary;
-- configured printer name;
+- canonical publication preflight;
+- link checks;
+- expected one-page PDF validation;
+- deterministic editorial compaction;
+- repeated render/check/cut loop;
+- malformed multi-page output prevented from being sent to the printer;
+- overflow debug PDF preservation.
+
+Future validation can add minimum-type-size and geometry regression fixtures.
+
+## Epic 8 — Printing — SOFTWARE DONE (v0), PHYSICAL TRIAL PENDING
+
+Implemented:
+- CUPS/`lp` adapter;
+- default/configured printer discovery;
+- `lpoptions` capability parsing;
+- duplex detection;
+- A4 media selection;
+- duplex-aware job submission;
 - explicit print result;
-- PDF preservation when printing is not attempted.
+- validated-PDF requirement before printing.
 
-Remaining:
-- printer capability detection;
-- duplex selection;
-- paper/offline error mapping;
-- real printer trial.
+Pending:
+- test against the real home printer;
+- map device-specific paper/offline states discovered in that trial.
 
-## Epic 9 — Digital fallback — NOT STARTED
+## Epic 9 — Digital fallback — DONE (v0 implementation)
 
-V1: email.
+Implemented:
+- generic SMTP email delivery;
+- HTML body;
+- PDF attachment when available;
+- explicit `--email`;
+- explicit `--email-on-print-failure`;
+- typed email failure result.
 
-Acceptance:
-When print delivery fails, the generated edition remains accessible and a configured email fallback can deliver it.
+Activation requires runtime SMTP configuration, not an architectural decision.
 
-## Epic 10 — Archive — IN PROGRESS
+## Epic 10 — Archive — DONE (v0)
 
 Implemented:
 - publication Markdown;
 - structured JSON metadata;
-- rendered HTML copy;
-- PDF copy when available;
-- stable edition directory.
+- HTML copy;
+- validated PDF copy when available;
+- run/failure/delivery summary;
+- stable edition directory;
+- `kushluk archive-list`.
 
-Remaining:
-- delivery/failure summary;
-- lookup API;
-- cross-edition references.
+Future:
+- story-thread lookup and first-class cross-edition references.
 
-## First executable milestone
+## Current executable milestone
 
-Current pipeline:
+`Open-Meteo + ICS/fixture calendar + RSS -> candidates -> clustering/ranking -> Markdown -> A4 HTML -> validated PDF -> CUPS or SMTP -> archive`
 
-`Open-Meteo + calendar fixture + configurable RSS -> candidates -> ranking -> Markdown -> A4 HTML -> optional PDF -> optional CUPS -> archive`
+This path is exercised by CI, including a walking-skeleton smoke test.
 
-Next engineering work that does not require a product decision:
-1. add layout validation and cut/retry loop;
-2. add typed failure model;
-3. add printer capability detection;
-4. replace calendar fixture with a live adapter;
-5. add email digital fallback;
-6. run multiple real editions and record failures.
+## What now genuinely blocks completion
+
+These are not safe to invent inside the repository:
+
+1. **Physical-format decision:** keep A4 duplex canonical or supersede it with the explored A3 gatefold.
+2. **Local runtime host:** decide where the 08:00 job actually runs so it can reach the printer and private connectors.
+3. **Personal connector setup:** provide/configure a real calendar source and task source.
+4. **Delivery credentials:** SMTP config if email fallback is wanted.
+5. **Physical trial:** print on the actual printer and run at least five real morning editions.
+6. **Production visual lock:** final typography/layout after physical tests.
 
 ## Reality trial
 

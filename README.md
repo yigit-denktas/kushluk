@@ -16,44 +16,50 @@ Kuşluk is being developed as an open, provider-independent system rather than a
 - **Adaptive editorial system.** A lead story is optional. Calendar and tasks outrank volatile travel details. Space is protected for serendipity.
 - **Multilingual by design.** Editions may use English, German, Turkish, other user-selected languages, or intentional language mixing.
 - **Provider-independent user model.** The project must survive changes in LLM, search, social, mail, calendar, or printing providers.
-- **Deterministic publication pipeline.** AI can research, rank, and write; rendering and print validation must remain deterministic.
-- **Graceful degradation.** Missing integrations must not produce empty layout holes or silently broken editions.
-- **Source discovery.** Connected accounts can help Kuşluk discover information sources the user already chose, such as newsletters, while keeping final source selection explicit.
+- **Deterministic publication pipeline.** AI can research, rank, and write; rendering and print validation remain deterministic.
+- **Graceful degradation.** Missing integrations remove/degrade blocks rather than silently corrupting the edition.
+- **Source discovery.** Connected accounts can help Kuşluk discover sources the user already chose, such as newsletters, while keeping final source selection explicit.
 
 ## Current status
 
-**Stage 1 is active.**
+**Stage 1 is active and executable.**
 
-The first executable walking skeleton is now in the repository:
+The current walking skeleton is:
 
-`weather + calendar fixture + RSS -> canonical candidates -> ranking -> publication -> HTML -> optional PDF -> CUPS adapter -> archive`
+`weather + calendar + RSS -> candidates -> clustering/ranking -> publication -> HTML -> validated PDF -> print/email -> archive`
 
 Implemented:
 - Python package and CLI;
 - environment-based configuration;
-- Open-Meteo weather connector;
-- calendar fixture connector;
-- RSS/Atom ingestion;
-- canonical source/candidate/publication models;
-- deterministic v0 ranking and deduplication;
+- Open-Meteo weather;
+- configurable RSS/Atom ingestion;
+- generic ICS calendar connector with fixture fallback;
+- canonical candidate/story/publication models;
+- deterministic clustering, ranking and deduplication;
+- optional-lead layout support without forcing a lead;
+- typed failure records and run summaries;
 - Markdown-first canonical edition;
 - deterministic A4 HTML renderer;
 - optional WeasyPrint PDF output;
-- CUPS/`lp` print adapter;
-- edition archive;
-- tests;
-- GitHub Actions CI;
+- one-page PDF validation with editorial cut/retry passes;
+- CUPS printer capability detection and duplex-aware printing;
+- optional SMTP delivery and email-on-print-failure;
+- local edition archive and archive listing;
+- runtime `doctor` command;
+- tests and GitHub Actions CI;
+- CI walking-skeleton smoke test;
 - manually dispatchable sample-edition workflow.
 
-Still deliberately incomplete:
-- live personal calendar/task connector;
-- layout overflow validation + editorial cut loop;
-- email fallback;
-- newsletter connector/onboarding implementation;
-- X/social connectors;
-- final production design system.
+Not complete yet:
+- a real local printer trial;
+- a real personal calendar/task connection beyond generic ICS;
+- configured SMTP credentials if email delivery is wanted;
+- multiple real morning editions and reading-feedback trials;
+- newsletter discovery connector implementation;
+- X/social inputs;
+- final production visual system.
 
-See [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md) for the small number of product decisions that remain intentionally unresolved.
+See [docs/STATUS.md](docs/STATUS.md) for the live implementation boundary and [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md) for decisions that are intentionally not being made automatically.
 
 ## Quick start
 
@@ -67,31 +73,51 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
+kushluk doctor
 kushluk generate --no-pdf
 ```
 
-For PDF output:
+For validated PDF output:
 
 ```bash
 pip install -e ".[pdf]"
 kushluk generate
 ```
 
-To submit the generated PDF through local CUPS:
+For local CUPS printing:
 
 ```bash
 kushluk generate --print
 ```
 
-Copy `.env.example` values into your runtime environment to change the configured location, RSS sources, archive/output paths, fixture path, or printer.
+For configured SMTP delivery:
+
+```bash
+kushluk generate --email
+```
+
+For print with email fallback:
+
+```bash
+kushluk generate --print --email-on-print-failure
+```
+
+To inspect recent local editions:
+
+```bash
+kushluk archive-list
+```
+
+Copy the relevant values from `.env.example` into the runtime environment to configure location, RSS sources, ICS calendar, printer, archive/output paths, or SMTP delivery.
 
 ## Project memory
 
-Repository documentation is treated as durable project memory so future maintainers and orchestrator agents can continue without relying on the founding conversation.
+Repository documentation is durable project memory for future maintainers and orchestrator agents.
 
 Start with:
 
 - [AGENTS.md](AGENTS.md)
+- [docs/STATUS.md](docs/STATUS.md)
 - [docs/PRODUCT.md](docs/PRODUCT.md)
 - [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
