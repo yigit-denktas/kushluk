@@ -35,6 +35,8 @@ When documents conflict, resolve in this order:
 6. `docs/DESIGN_BRIEF.md`
 7. `docs/ROADMAP.md` and implementation backlog
 
+`docs/OPEN_DECISIONS.md` records unresolved choices and never overrides accepted ADRs.
+
 Do not silently reinterpret a recorded decision. Propose a new ADR when changing architecture or a non-trivial product invariant.
 
 ## Working method
@@ -49,9 +51,28 @@ For each stage:
 - record what changed and why;
 - only then deepen integrations.
 
+## Current implementation
+
+Stage 1 is active.
+
+The repository now contains a runnable Python walking skeleton with:
+- Open-Meteo weather;
+- configurable RSS/Atom ingestion;
+- calendar fixture;
+- canonical models;
+- deterministic ranking/deduplication;
+- Markdown publication output;
+- A4 HTML rendering;
+- optional WeasyPrint PDF;
+- CUPS/`lp` adapter;
+- local archive;
+- tests and CI.
+
+The remaining Stage 1 work is validation/cut-loop, live personal connector replacement, digital fallback, and real-world print trials.
+
 ## Stage 1 boundary
 
-The first implementation must prove:
+The implementation must prove:
 
 `real inputs -> normalized candidates -> publication model -> deterministic A4 HTML -> PDF -> printer/digital fallback -> archive`
 
@@ -70,6 +91,8 @@ Reuse permissively licensed upstream components when they save time, but:
 - record reused code or substantial adapted material in `THIRD_PARTY_NOTICES.md`;
 - preserve required copyright/license notices;
 - do not make an upstream project a hard product dependency without an ADR.
+
+See `docs/UPSTREAM_REVIEW.md` before introducing a new upstream dependency.
 
 ## Naming
 
