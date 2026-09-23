@@ -15,7 +15,7 @@ class Settings:
     archive_dir: Path = Path("archive")
     output_dir: Path = Path("output")
     calendar_fixture: Path = Path("fixtures/calendar.json")
-    printer: string | None = None
+    printer: str | None = None
 
     @classmethod
     def from_env(cls) -> "Settings":
