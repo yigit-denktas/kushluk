@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import hashlib
-from collections import OrderedDict
 from urllib.parse import urlsplit, urlunsplit
 
 from kushluk.models import Candidate, Story, StoryCluster
@@ -92,7 +91,3 @@ def _title_tokens(title: str) -> set[str]:
         "".join(ch.lower() if ch.isalnum() else " " for ch in title).split()
     )
     return {token for token in normalized.split() if len(token) > 2}
-
-
-def _title_key(title: str) -> str:
-    return " ".join("".join(ch.lower() if ch.isalnum() else " " for ch in title).split())
