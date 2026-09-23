@@ -11,12 +11,21 @@ Before copying or substantially adapting third-party material:
 3. preserve required notices in the relevant source files when the license requires it;
 4. prefer adaptation at clear seams rather than importing an entire product architecture.
 
-## Known references under evaluation
+## References reviewed — no code incorporated
 
-These are **design/architecture references only until code is actually incorporated**:
+The following projects were reviewed as architecture/product references. No source code or template from them has been copied into Kuşluk by the Stage 1 implementation:
 
-- `drkpxl/drkpxl-skills` — morning briefing skill and print/render workflow.
-- Karen X. Cheng's personal newspaper example at `newspaper.karenx.com`.
-- Other permissively licensed morning-paper / print-briefing projects identified during upstream review.
+- `cruftbox/firstlight` — MIT; useful reference for Open-Meteo, RSS, single-page local printing and archive patterns.
+- `dmthepm/morning-paper` — MIT; useful reference for an owned newsroom, finite editions and CLI/PDF separation.
+- `falense/openpaper` — MIT; useful reference for deterministic source fetchers and separating ingestion from curation.
+- `vaelkeep/hermes-paper-agent` — architectural reference for generator/press separation, validation loops and provenance. Exact license must be verified before any code reuse.
+- `drkpxl/drkpxl-skills` — earlier morning-briefing/print workflow reference; verify exact source and license before copying anything.
+- Karen X. Cheng's personal newspaper example — design/product reference only.
 
-Do not list a reference as incorporated code until the exact source and license have been verified.
+See `docs/UPSTREAM_REVIEW.md` for the current reuse assessment.
+
+## Incorporated third-party code
+
+None recorded yet beyond normal declared package dependencies.
+
+When code or substantial adapted material is incorporated, add the exact source, license, copyright notice and affected Kuşluk files here.
