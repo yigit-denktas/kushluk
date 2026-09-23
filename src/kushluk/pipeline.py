@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import date
 from pathlib import Path
 
@@ -10,10 +10,11 @@ from kushluk.connectors.calendar_fixture import CalendarFixtureConnector
 from kushluk.connectors.rss import RSSConnector
 from kushluk.connectors.weather import OpenMeteoWeatherConnector
 from kushluk.editor import select_stories
-from kushluk.models import Publication
+from kushluk.models import Failure, Publication
 from kushluk.printing import PrintResult, print_pdf
 from kushluk.publication import build_publication, publication_markdown
 from kushluk.renderer import render_html, render_pdf
+from kushluk.validation import compact_for_layout, validate_pdf, validate_publication
 
 
 @dataclass(slots=True)
@@ -24,7 +25,11 @@ class PipelineResult:
     pdf_path: Path | None
     archive_dir: Path
     print_result: PrintResult | None
-    warnings: list[str]
+    failures: list[Failure]
+
+    @property
+    def warnings(self) -> list[str]:
+        return [failure.message for failure in self.failures if failure.severity != "info"]
 
 
 def run_pipeline(
@@ -34,7 +39,7 @@ def run_pipeline(
     make_pdf: bool = True,
     send_to_printer: bool = False,
 ) -> PipelineResult:
-    warnings: list[str] = []
+    failures: list[Failure] = []
     practical = []
 
     try:
@@ -47,22 +52,29 @@ def run_pipeline(
             ).fetch()
         )
     except Exception as exc:
-        warnings.append(f"weather unavailable: {type(exc).__name__}: {exc}")
+        failures.append(_failure("weather_unavailable", "degraded", exc, "weather"))
 
     try:
         practical.extend(CalendarFixtureConnector(settings.calendar_fixture).fetch())
     except Exception as exc:
-        warnings.append(f"calendar fixture unavailable: {type(exc).__name__}: {exc}")
+        failures.append(_failure("calendar_unavailable", "degraded", exc, "calendar"))
 
     candidates = []
     try:
         candidates.extend(RSSConnector(settings.rss_urls).fetch())
     except Exception as exc:
-        warnings.append(f"RSS unavailable: {type(exc).__name__}: {exc}")
+        failures.append(_failure("rss_unavailable", "degraded", exc, "rss"))
 
     stories = select_stories(candidates, limit=3)
     if not stories:
-        warnings.append("No editorial stories were selected.")
+        failures.append(
+            Failure(
+                code="no_editorial_stories",
+                severity="degraded",
+                message="No editorial stories were selected.",
+                source="editorial",
+            )
+        )
 
     publication = build_publication(
         target_date=target_date,
@@ -70,35 +82,116 @@ def run_pipeline(
         location_name=settings.home_name,
         practical=practical,
         stories=stories,
-        notes=warnings,
+        notes=[failure.message for failure in failures if failure.severity != "info"],
     )
+
+    preflight = validate_publication(publication)
+    for message in preflight.errors:
+        failures.append(
+            Failure("publication_invalid", "failed", message, source="validation", recoverable=False)
+        )
+    for message in preflight.warnings:
+        failures.append(Failure("publication_warning", "info", message, source="validation"))
 
     settings.output_dir.mkdir(parents=True, exist_ok=True)
     markdown_path = settings.output_dir / f"{publication.edition_id}.md"
     html_path = settings.output_dir / f"{publication.edition_id}.html"
     pdf_path = settings.output_dir / f"{publication.edition_id}.pdf"
-    markdown_path.write_text(publication_markdown(publication), encoding="utf-8")
-    render_html(publication, html_path)
 
     rendered_pdf: Path | None = None
-    if make_pdf:
-        try:
-            rendered_pdf = render_pdf(html_path, pdf_path)
-        except Exception as exc:
-            warnings.append(f"PDF unavailable: {type(exc).__name__}: {exc}")
+    if make_pdf and preflight.ok:
+        working = publication
+        for attempt in range(4):
+            render_html(working, html_path)
+            try:
+                candidate_pdf = render_pdf(html_path, pdf_path)
+                pdf_validation = validate_pdf(candidate_pdf, expected_pages=1)
+            except Exception as exc:
+                failures.append(_failure("pdf_unavailable", "degraded", exc, "renderer"))
+                break
+
+            if pdf_validation.ok:
+                publication = working
+                rendered_pdf = candidate_pdf
+                break
+
+            if attempt == 3:
+                failures.append(
+                    Failure(
+                        code="layout_overflow",
+                        severity="failed",
+                        message=pdf_validation.errors[0],
+                        source="renderer",
+                        recoverable=False,
+                    )
+                )
+                overflow_path = pdf_path.with_suffix(".overflow.pdf")
+                if candidate_pdf.exists():
+                    candidate_pdf.replace(overflow_path)
+                publication = working
+                break
+
+            failures.append(
+                Failure(
+                    code="layout_compacted",
+                    severity="info",
+                    message=(
+                        f"PDF rendered to {pdf_validation.page_count} pages; "
+                        f"applying editorial cut pass {attempt + 1}."
+                    ),
+                    source="renderer",
+                )
+            )
+            working = compact_for_layout(working, attempt + 1)
+    else:
+        render_html(publication, html_path)
+
+    publication = replace(
+        publication,
+        notes=[failure.message for failure in failures if failure.severity == "degraded"],
+    )
+    markdown_path.write_text(publication_markdown(publication), encoding="utf-8")
+
+    if rendered_pdf is None:
+        render_html(publication, html_path)
 
     print_result: PrintResult | None = None
     if send_to_printer:
         if rendered_pdf:
             print_result = print_pdf(rendered_pdf, settings.printer, execute=True)
+            if not print_result.success:
+                failures.append(
+                    Failure(
+                        code="print_failed",
+                        severity="failed",
+                        message=print_result.detail,
+                        source="printer",
+                    )
+                )
         else:
-            print_result = PrintResult(True, False, "Print skipped because PDF rendering failed.")
+            print_result = PrintResult(
+                True, False, "Print skipped because a validated one-page PDF is unavailable."
+            )
+            failures.append(
+                Failure(
+                    code="print_skipped",
+                    severity="failed",
+                    message=print_result.detail,
+                    source="printer",
+                )
+            )
 
+    run_summary = {
+        "failures": [asdict(failure) for failure in failures],
+        "print": asdict(print_result) if print_result else None,
+        "validated_pdf": bool(rendered_pdf),
+    }
     archive_dir = archive_publication(
         publication,
         settings.archive_dir,
         html_path=html_path,
         pdf_path=rendered_pdf,
+        run_summary=run_summary,
     )
     return PipelineResult(
         publication=publication,
@@ -107,5 +200,14 @@ def run_pipeline(
         pdf_path=rendered_pdf,
         archive_dir=archive_dir,
         print_result=print_result,
-        warnings=warnings,
+        failures=failures,
+    )
+
+
+def _failure(code: str, severity: str, exc: Exception, source: str) -> Failure:
+    return Failure(
+        code=code,
+        severity=severity,  # type: ignore[arg-type]
+        message=f"{source} unavailable: {type(exc).__name__}: {exc}",
+        source=source,
     )

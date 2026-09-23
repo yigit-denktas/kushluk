@@ -7,25 +7,142 @@ from pathlib import Path
 
 
 @dataclass(slots=True)
+class PrinterCapabilities:
+    printer: str | None
+    available: bool
+    duplex_supported: bool
+    media_options: tuple[str, ...]
+    detail: str
+
+
+@dataclass(slots=True)
 class PrintResult:
     attempted: bool
     success: bool
     detail: str
+    printer: str | None = None
+    duplex_used: bool = False
 
 
-def print_pdf(pdf_path: Path, printer: str | None = None, *, execute: bool = False) -> PrintResult:
+def detect_printer_capabilities(printer: str | None = None) -> PrinterCapabilities:
+    lpoptions = shutil.which("lpoptions")
+    lpstat = shutil.which("lpstat")
+    resolved = printer or _default_printer(lpstat)
+    if not resolved:
+        return PrinterCapabilities(None, False, False, (), "No configured default printer.")
+    if not lpoptions:
+        return PrinterCapabilities(
+            resolved, False, False, (), "CUPS 'lpoptions' command is not available."
+        )
+
+    completed = subprocess.run(
+        [lpoptions, "-p", resolved, "-l"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or "Unable to query printer capabilities."
+        return PrinterCapabilities(resolved, False, False, (), detail)
+
+    duplex, media = parse_lpoptions(completed.stdout)
+    available = _printer_available(lpstat, resolved)
+    detail = "Printer ready." if available else "Printer configured; live state unavailable/offline."
+    return PrinterCapabilities(resolved, available, duplex, media, detail)
+
+
+def parse_lpoptions(text: str) -> tuple[bool, tuple[str, ...]]:
+    duplex = False
+    media: list[str] = []
+    for raw in text.splitlines():
+        line = raw.strip()
+        lower = line.lower()
+        if lower.startswith("duplex/") or lower.startswith("sides/"):
+            values = line.split(":", 1)[-1].split()
+            duplex = any(
+                value.lstrip("*").lower()
+                in {
+                    "duplexnotumble",
+                    "duplextumble",
+                    "two-sided-long-edge",
+                    "two-sided-short-edge",
+                }
+                for value in values
+            )
+        if lower.startswith(("pagesize/", "media/", "mediasize/")):
+            values = line.split(":", 1)[-1].split()
+            media.extend(value.lstrip("*") for value in values)
+    return duplex, tuple(dict.fromkeys(media))
+
+
+def print_pdf(
+    pdf_path: Path,
+    printer: str | None = None,
+    *,
+    execute: bool = False,
+    duplex: bool = True,
+) -> PrintResult:
     if not execute:
         return PrintResult(False, True, "Print skipped (dry-run). Use --print to submit the job.")
     if not pdf_path.exists():
-        return PrintResult(True, False, f"PDF not found: {pdf_path}")
+        return PrintResult(True, False, f"PDF not found: {pdf_path}", printer=printer)
+
     lp = shutil.which("lp")
     if not lp:
-        return PrintResult(True, False, "CUPS 'lp' command is not available.")
+        return PrintResult(True, False, "CUPS 'lp' command is not available.", printer=printer)
+
+    capabilities = detect_printer_capabilities(printer)
+    resolved = capabilities.printer or printer
     command = [lp]
-    if printer:
-        command += ["-d", printer]
-    command += ["-o", "media=A4", str(pdf_path)]
+    if resolved:
+        command += ["-d", resolved]
+    command += ["-o", "media=A4"]
+
+    duplex_used = bool(duplex and capabilities.duplex_supported)
+    if duplex_used:
+        command += ["-o", "sides=two-sided-long-edge"]
+
+    command.append(str(pdf_path))
     completed = subprocess.run(command, capture_output=True, text=True, check=False)
     if completed.returncode == 0:
-        return PrintResult(True, True, completed.stdout.strip() or "Print job submitted.")
-    return PrintResult(True, False, completed.stderr.strip() or "Print submission failed.")
+        return PrintResult(
+            True,
+            True,
+            completed.stdout.strip() or "Print job submitted.",
+            printer=resolved,
+            duplex_used=duplex_used,
+        )
+    return PrintResult(
+        True,
+        False,
+        completed.stderr.strip() or "Print submission failed.",
+        printer=resolved,
+        duplex_used=duplex_used,
+    )
+
+
+def _default_printer(lpstat: str | None) -> str | None:
+    if not lpstat:
+        return None
+    completed = subprocess.run([lpstat, "-d"], capture_output=True, text=True, check=False)
+    if completed.returncode != 0:
+        return None
+    text = completed.stdout.strip()
+    if ":" not in text:
+        return None
+    return text.split(":", 1)[1].strip() or None
+
+
+def _printer_available(lpstat: str | None, printer: str) -> bool:
+    if not lpstat:
+        return False
+    completed = subprocess.run(
+        [lpstat, "-p", printer],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        return False
+    lowered = completed.stdout.lower()
+    return "disabled" not in lowered and ("idle" in lowered or "enabled" in lowered)

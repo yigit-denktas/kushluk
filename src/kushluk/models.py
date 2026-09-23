@@ -6,6 +6,8 @@ from typing import Any, Literal
 
 
 SourceKind = Literal["weather", "calendar", "task", "rss", "newsletter", "other"]
+FailureSeverity = Literal["info", "degraded", "failed"]
+DeliveryStatus = Literal["skipped", "sent", "failed"]
 
 
 @dataclass(slots=True)
@@ -59,6 +61,22 @@ class Story:
     source_name: str
     source_url: str | None = None
     why_selected: str | None = None
+
+
+@dataclass(slots=True)
+class Failure:
+    code: str
+    severity: FailureSeverity
+    message: str
+    source: str | None = None
+    recoverable: bool = True
+
+
+@dataclass(slots=True)
+class DeliveryResult:
+    channel: str
+    status: DeliveryStatus
+    detail: str
 
 
 @dataclass(slots=True)
