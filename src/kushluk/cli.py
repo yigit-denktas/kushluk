@@ -18,7 +18,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--print",
         dest="send_to_printer",
         action="store_true",
-        help="Submit PDF to CUPS",
+        help="Submit a validated PDF to CUPS",
+    )
+    generate.add_argument(
+        "--email",
+        dest="send_email",
+        action="store_true",
+        help="Send the generated edition using configured SMTP delivery",
+    )
+    generate.add_argument(
+        "--email-on-print-failure",
+        action="store_true",
+        help="Send email only if requested printing fails",
     )
     return parser
 
@@ -32,6 +43,8 @@ def main(argv: list[str] | None = None) -> int:
             target_date=target,
             make_pdf=not args.no_pdf,
             send_to_printer=args.send_to_printer,
+            send_email=args.send_email,
+            email_on_print_failure=args.email_on_print_failure,
         )
         print(f"Edition: {result.publication.edition_id}")
         print(f"Markdown: {result.markdown_path}")
@@ -44,8 +57,13 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"- {warning}")
         if result.print_result:
             print(f"Print: {result.print_result.detail}")
-            return 0 if result.print_result.success else 2
-        return 0
+        if result.email_result:
+            print(f"Email: {result.email_result.detail}")
+        failed_delivery = (
+            (result.print_result is not None and not result.print_result.success)
+            or (result.email_result is not None and result.email_result.status == "failed")
+        )
+        return 2 if failed_delivery else 0
     return 1
 
 

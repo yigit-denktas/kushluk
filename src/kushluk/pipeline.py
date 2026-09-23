@@ -7,10 +7,12 @@ from pathlib import Path
 from kushluk.archive import archive_publication
 from kushluk.config import Settings
 from kushluk.connectors.calendar_fixture import CalendarFixtureConnector
+from kushluk.connectors.calendar_ics import ICSCalendarConnector
 from kushluk.connectors.rss import RSSConnector
 from kushluk.connectors.weather import OpenMeteoWeatherConnector
+from kushluk.delivery import send_email_edition
 from kushluk.editor import select_stories
-from kushluk.models import Failure, Publication
+from kushluk.models import DeliveryResult, Failure, FailureSeverity, Publication
 from kushluk.printing import PrintResult, print_pdf
 from kushluk.publication import build_publication, publication_markdown
 from kushluk.renderer import render_html, render_pdf
@@ -25,6 +27,7 @@ class PipelineResult:
     pdf_path: Path | None
     archive_dir: Path
     print_result: PrintResult | None
+    email_result: DeliveryResult | None
     failures: list[Failure]
 
     @property
@@ -38,6 +41,8 @@ def run_pipeline(
     target_date: date,
     make_pdf: bool = True,
     send_to_printer: bool = False,
+    send_email: bool = False,
+    email_on_print_failure: bool = False,
 ) -> PipelineResult:
     failures: list[Failure] = []
     practical = []
@@ -54,10 +59,20 @@ def run_pipeline(
     except Exception as exc:
         failures.append(_failure("weather_unavailable", "degraded", exc, "weather"))
 
-    try:
-        practical.extend(CalendarFixtureConnector(settings.calendar_fixture).fetch())
-    except Exception as exc:
-        failures.append(_failure("calendar_unavailable", "degraded", exc, "calendar"))
+    if settings.calendar_ics:
+        try:
+            practical.extend(
+                ICSCalendarConnector(
+                    settings.calendar_ics,
+                    target_date,
+                    settings.timezone,
+                ).fetch()
+            )
+        except Exception as exc:
+            failures.append(_failure("calendar_ics_unavailable", "degraded", exc, "calendar"))
+            _load_calendar_fixture(settings, practical, failures)
+    else:
+        _load_calendar_fixture(settings, practical, failures)
 
     candidates = []
     try:
@@ -181,9 +196,37 @@ def run_pipeline(
                 )
             )
 
+    should_email = send_email or (
+        email_on_print_failure and print_result is not None and not print_result.success
+    )
+    email_result: DeliveryResult | None = None
+    if should_email:
+        email_result = send_email_edition(
+            publication,
+            host=settings.smtp_host,
+            port=settings.smtp_port,
+            username=settings.smtp_username,
+            password=settings.smtp_password,
+            sender=settings.smtp_from,
+            recipient=settings.email_to,
+            starttls=settings.smtp_starttls,
+            html_path=html_path,
+            pdf_path=rendered_pdf,
+        )
+        if email_result.status == "failed":
+            failures.append(
+                Failure(
+                    code="email_failed",
+                    severity="failed",
+                    message=email_result.detail,
+                    source="email",
+                )
+            )
+
     run_summary = {
         "failures": [asdict(failure) for failure in failures],
         "print": asdict(print_result) if print_result else None,
+        "email": asdict(email_result) if email_result else None,
         "validated_pdf": bool(rendered_pdf),
     }
     archive_dir = archive_publication(
@@ -200,14 +243,31 @@ def run_pipeline(
         pdf_path=rendered_pdf,
         archive_dir=archive_dir,
         print_result=print_result,
+        email_result=email_result,
         failures=failures,
     )
 
 
-def _failure(code: str, severity: str, exc: Exception, source: str) -> Failure:
+def _load_calendar_fixture(
+    settings: Settings,
+    practical: list,
+    failures: list[Failure],
+) -> None:
+    try:
+        practical.extend(CalendarFixtureConnector(settings.calendar_fixture).fetch())
+    except Exception as exc:
+        failures.append(_failure("calendar_unavailable", "degraded", exc, "calendar"))
+
+
+def _failure(
+    code: str,
+    severity: FailureSeverity,
+    exc: Exception,
+    source: str,
+) -> Failure:
     return Failure(
         code=code,
-        severity=severity,  # type: ignore[arg-type]
+        severity=severity,
         message=f"{source} unavailable: {type(exc).__name__}: {exc}",
         source=source,
     )
