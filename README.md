@@ -2,7 +2,7 @@
 
 **Kuşluk** is a local-first, print-first personal daily newspaper.
 
-The project turns a user's day, interests, selected information sources, and public signals into a concise morning edition designed to be read away from a screen. The default physical artifact is one DIN A4 sheet, ideally duplex, ready by 08:00 local time.
+The project turns a user's day, interests, selected information sources, and public signals into a concise morning edition designed to be read away from a screen. The current canonical physical artifact is one DIN A4 sheet, ideally duplex, ready by 08:00 local time.
 
 > Working principle: **selection over collection; reliability before cleverness.**
 
@@ -22,9 +22,72 @@ Kuşluk is being developed as an open, provider-independent system rather than a
 
 ## Current status
 
-Stage 0 — product definition and architecture.
+**Stage 1 is active.**
 
-The repository documentation is intentionally treated as durable project memory so that future maintainers and orchestrator agents can continue the project without relying on the original conversation.
+The first executable walking skeleton is now in the repository:
+
+`weather + calendar fixture + RSS -> canonical candidates -> ranking -> publication -> HTML -> optional PDF -> CUPS adapter -> archive`
+
+Implemented:
+- Python package and CLI;
+- environment-based configuration;
+- Open-Meteo weather connector;
+- calendar fixture connector;
+- RSS/Atom ingestion;
+- canonical source/candidate/publication models;
+- deterministic v0 ranking and deduplication;
+- Markdown-first canonical edition;
+- deterministic A4 HTML renderer;
+- optional WeasyPrint PDF output;
+- CUPS/`lp` print adapter;
+- edition archive;
+- tests;
+- GitHub Actions CI;
+- manually dispatchable sample-edition workflow.
+
+Still deliberately incomplete:
+- live personal calendar/task connector;
+- layout overflow validation + editorial cut loop;
+- email fallback;
+- newsletter connector/onboarding implementation;
+- X/social connectors;
+- final production design system.
+
+See [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md) for the small number of product decisions that remain intentionally unresolved.
+
+## Quick start
+
+Requires Python 3.11+.
+
+```bash
+git clone https://github.com/yigit-denktas/kushluk.git
+cd kushluk
+
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+kushluk generate --no-pdf
+```
+
+For PDF output:
+
+```bash
+pip install -e ".[pdf]"
+kushluk generate
+```
+
+To submit the generated PDF through local CUPS:
+
+```bash
+kushluk generate --print
+```
+
+Copy `.env.example` values into your runtime environment to change the configured location, RSS sources, archive/output paths, fixture path, or printer.
+
+## Project memory
+
+Repository documentation is treated as durable project memory so future maintainers and orchestrator agents can continue without relying on the founding conversation.
 
 Start with:
 
@@ -36,6 +99,8 @@ Start with:
 - [docs/DESIGN_BRIEF.md](docs/DESIGN_BRIEF.md)
 - [docs/DATA_MAP.md](docs/DATA_MAP.md)
 - [docs/ONBOARDING.md](docs/ONBOARDING.md)
+- [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md)
+- [docs/UPSTREAM_REVIEW.md](docs/UPSTREAM_REVIEW.md)
 - [docs/ROADMAP.md](docs/ROADMAP.md)
 - [docs/STAGE_1_BACKLOG.md](docs/STAGE_1_BACKLOG.md)
 - [docs/adr/](docs/adr/)
