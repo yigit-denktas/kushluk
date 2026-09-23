@@ -4,169 +4,158 @@
 
 Produce a real DIN A4 Kuşluk edition end to end with no hand-edited HTML.
 
-## Epic 1 — Repository foundation
+Status: **ACTIVE**
 
-### Features
-- Python project structure
-- configuration model
-- `.env.example`
-- local data/output paths
-- test harness
-- formatter/linter
-- CI basics later if useful
+## Epic 1 — Repository foundation — IN PROGRESS
 
-### Acceptance
-- fresh clone can install and run locally from documented commands;
-- no secrets committed;
-- config errors are explicit.
+Implemented:
+- Python project structure;
+- configuration model;
+- `.env.example`;
+- local output/archive paths;
+- test harness;
+- Ruff/pytest CI;
+- manually dispatchable sample-edition workflow.
 
-## Epic 2 — Canonical models
+Remaining:
+- verify CI green on GitHub after each dependency/workflow change;
+- improve install/runtime error messages as real environments expose them.
 
-### Features
-Define schemas for:
-- Source
-- Candidate
-- StoryCluster
-- PracticalItem
-- Publication
-- EditionMetadata
-- DeliveryResult
-- Failure
+## Epic 2 — Canonical models — IN PROGRESS
 
-### Acceptance
-Provider-specific fields do not leak into core editorial schemas.
+Implemented:
+- SourceRef;
+- Candidate;
+- PracticalItem;
+- Story;
+- Publication;
+- stable edition identity.
 
-## Epic 3 — Initial connectors
+Remaining:
+- explicit StoryCluster model;
+- typed Failure model;
+- richer DeliveryResult;
+- schema/versioning once real connectors begin producing durable archives.
 
-### Weather
-Use a reliable source for configured default location.
+## Epic 3 — Initial connectors — IN PROGRESS
 
-### Calendar
-Start with fixture/ICS boundary; replace with a live connector once publication loop works.
+Implemented:
+- Open-Meteo weather;
+- calendar fixture;
+- configurable RSS/Atom connector.
 
-### Public stories
-Use one open RSS/feed path for at least three current stories.
+Remaining:
+- live calendar connector;
+- task connector;
+- source-specific error typing;
+- optional X/Grok experiment behind a connector seam.
 
-### X experiment
-Investigate the Grok/X route desired by the founding user, but keep it behind an optional connector. Stage 1 must still work without it.
+Acceptance remains: each connector must fail independently without breaking unrelated connectors.
 
-### Acceptance
-Each connector can fail independently without breaking unrelated connectors.
+## Epic 4 — Normalisation and ranking — IN PROGRESS
 
-## Epic 4 — Normalisation and ranking
-
-### Features
+Implemented:
 - canonical candidate conversion;
-- deduplication;
-- minimal story clustering;
-- explainable ranking v0;
-- optional lead;
+- title-level deduplication;
+- explainable deterministic ranking v0.
+
+Remaining:
+- story clustering beyond title normalization;
+- stronger source-quality inputs;
+- optional lead decision;
 - protected serendipity slot.
 
-### Acceptance
-For every selected story, debug output can explain why it was selected.
+## Epic 5 — Publication model — IN PROGRESS
 
-## Epic 5 — Publication model
-
-### Features
+Implemented:
 - Markdown-first edition;
-- metadata sidecar/model;
 - Today / For You surfaces;
 - source references;
-- QR/link placeholders;
-- edition ID.
+- edition ID;
+- JSON archive metadata.
 
-### Acceptance
-The canonical publication is useful without the HTML renderer.
+Remaining:
+- explicit metadata schema version;
+- QR/link representation in the canonical model;
+- prior-edition/story references.
 
-## Epic 6 — Deterministic renderer
+## Epic 6 — Deterministic renderer — IN PROGRESS
 
-### Suggested stack
-- Jinja2
-- print CSS
-- WeasyPrint
+Implemented:
+- Jinja2 A4 HTML template;
+- print CSS;
+- monochrome-safe warm editorial v0;
+- optional WeasyPrint PDF rendering.
 
-### Features
-- DIN A4;
-- front/back support;
-- single-sided fallback;
-- paper profile token;
-- monochrome-safe style;
-- design skeleton inspired by the design brief, not by generic UI cards.
+Remaining:
+- front/back duplex templates;
+- paper profile tokens;
+- stronger production design implementation;
+- print-geometry regression fixtures.
 
-### Acceptance
-Same publication model + same template yields the same layout.
+## Epic 7 — Validation and cut loop — NOT STARTED
 
-## Epic 7 — Validation and cut loop
-
-### Validate
+Validate:
 - expected page count;
-- no overflow;
-- readable minimum type sizes;
+- overflow;
+- minimum readable type sizes;
 - required blocks;
 - basic link integrity.
 
-### Cut order
-Use `EDITORIAL_SYSTEM.md`.
+Overflow must trigger editorial cuts/rerendering rather than uncontrolled font shrinking.
 
-### Acceptance
-Overflow triggers editorial cuts and rerendering rather than uncontrolled font shrinking.
+## Epic 8 — Printing — IN PROGRESS
 
-## Epic 8 — Printing
+Implemented:
+- CUPS/`lp` adapter boundary;
+- configured printer name;
+- explicit print result;
+- PDF preservation when printing is not attempted.
 
-### Initial backend
-CUPS / `lp`.
+Remaining:
+- printer capability detection;
+- duplex selection;
+- paper/offline error mapping;
+- real printer trial.
 
-### Features
-- configured printer;
-- capability detection where available;
-- duplex when supported;
-- single-sided fallback;
-- explicit job result;
-- preserve PDF if print fails.
+## Epic 9 — Digital fallback — NOT STARTED
 
-### Acceptance
-A local test edition reaches the configured printer or produces a typed delivery error.
+V1: email.
 
-## Epic 9 — Digital fallback
-
-### V1
-Email.
-
-### Acceptance
+Acceptance:
 When print delivery fails, the generated edition remains accessible and a configured email fallback can deliver it.
 
-## Epic 10 — Archive
+## Epic 10 — Archive — IN PROGRESS
 
-Store locally:
+Implemented:
 - publication Markdown;
-- metadata;
-- rendered HTML;
-- PDF where configured;
-- failure/delivery summary.
+- structured JSON metadata;
+- rendered HTML copy;
+- PDF copy when available;
+- stable edition directory.
 
-### Acceptance
-An earlier edition can be located by edition ID and referenced from a later edition.
+Remaining:
+- delivery/failure summary;
+- lookup API;
+- cross-edition references.
 
 ## First executable milestone
 
-Use:
-- real weather for Köln/default location;
-- a calendar fixture;
-- three current RSS stories.
+Current pipeline:
 
-Produce:
-- canonical publication;
-- A4 HTML;
-- validated PDF;
-- print attempt;
-- local archive.
+`Open-Meteo + calendar fixture + configurable RSS -> candidates -> ranking -> Markdown -> A4 HTML -> optional PDF -> optional CUPS -> archive`
 
-Then replace fixtures with real personal connectors.
+Next engineering work that does not require a product decision:
+1. add layout validation and cut/retry loop;
+2. add typed failure model;
+3. add printer capability detection;
+4. replace calendar fixture with a live adapter;
+5. add email digital fallback;
+6. run multiple real editions and record failures.
 
 ## Reality trial
 
-After the first print, run at least five real editions before expanding scope aggressively.
+After the first successful local print, run at least five real editions before expanding scope aggressively.
 
 Record:
 - what was actually read;
