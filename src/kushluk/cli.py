@@ -5,6 +5,7 @@ from datetime import date
 
 from kushluk.archive import list_editions
 from kushluk.config import Settings
+from kushluk.doctor import core_ready, run_doctor
 from kushluk.pipeline import run_pipeline
 
 
@@ -35,6 +36,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     archive = sub.add_parser("archive-list", help="List recent local Kuşluk editions")
     archive.add_argument("--limit", type=int, default=20)
+
+    sub.add_parser("doctor", help="Check local Kuşluk runtime readiness")
     return parser
 
 
@@ -78,6 +81,12 @@ def main(argv: list[str] | None = None) -> int:
                 f"{item.get('location_name') or '?'} · {item['path']}"
             )
         return 0
+
+    if args.command == "doctor":
+        checks = run_doctor(settings)
+        for check in checks:
+            print(f"{check.status.upper():8} {check.name:10} {check.detail}")
+        return 0 if core_ready(checks) else 2
 
     return 1
 
