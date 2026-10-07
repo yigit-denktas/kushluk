@@ -116,30 +116,25 @@ Use:
 
 The page should feel composed by an editor, not assembled from dashboard cards.
 
-Front side:
-- calm;
-- strong orientation;
-- immediate scan of the day;
-- no forced hero story.
-
-Back side:
-- more editorial;
-- room for stories, language material, illustration, and curiosity.
+Across the four logical pages:
+- page 1 should provide calm arrival and immediate orientation;
+- practical material should appear early and remain easy to scan;
+- later pages may carry denser editorial stories, language material, illustration, and curiosity;
+- no page is required to manufacture a hero story;
+- page archetypes may vary while the underlying grid and design tokens remain stable.
 
 ## Physical object
 
-The current accepted product decision remains one DIN A4 sheet, preferably duplex.
+ADR 0013 fixes the canonical edition as **four logical DIN A4 pages** and separates editorial layout from physical imposition.
 
-Recent design exploration also established a technically plausible A3 landscape gatefold:
-- open: 420 × 297 mm;
-- left flap: 105 mm;
-- centre: 210 mm;
-- right flap: 105 mm;
-- closed: 210 × 297 mm (A4).
+Supported production directions:
+- **A4 Home Printer** — two A4 sheets, preferably duplex, stacked and optionally bound along the left edge; three restrained staple registration marks may be exposed inside the binding margin.
+- **A3 Folded Newspaper** — one A3 landscape sheet, duplex, imposed as outside `4 | 1` and inside `2 | 3`, then half-folded to A4.
+- **Single-sided fallback** — logical A4 pages emitted separately when duplex is unavailable.
 
-The A3 gatefold is **experimental until the physical-format decision is resolved** in `OPEN_DECISIONS.md`. Do not silently replace the accepted A4 default.
+The design must reserve a safe inner margin that works both beside the A4 binding edge and near the A3 fold. Print-profile marks belong to the print layer, not editorial content.
 
-In all mockups, represent Kuşluk as a single thin sheet. No book spine, thick paper block, bound magazine, or newspaper bundle.
+Mockups should represent the actual thin-sheet construction; do not invent a book spine or thick bound magazine.
 
 ## Paper as a design token
 
@@ -195,3 +190,5 @@ QR codes are functional escape hatches for deeper/live material, not decoration.
 Use generative visual tools to explore directions, but freeze approved layouts into deterministic HTML/CSS/SVG templates.
 
 Daily generation must fill a design system; it must not redesign the publication from scratch each morning.
+
+The production system should separate **semantic blocks**, **layout archetypes**, and **visual themes**. Canva/Adobe/InDesign-style tools may be used to author or test templates, but unattended daily production should depend on them only if a technical spike proves exact slot addressing, overflow control, crop control, predictable export, and programmatic failure reporting.
