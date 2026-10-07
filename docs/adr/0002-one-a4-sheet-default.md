@@ -1,6 +1,6 @@
 # ADR 0002 — One DIN A4 sheet by default
 
-**Status:** Accepted
+**Status:** Superseded by ADR 0013
 
 ## Context
 
@@ -20,6 +20,6 @@ A bounded artifact improves attention, physical usability, and editorial discipl
 
 The editorial system must cut content to fit rather than continuously expanding the edition.
 
-## Revisit
+## Supersession
 
-Revisit after real usage shows the one-sheet constraint consistently prevents essential value.
+ADR 0013 replaces the one-sheet default with four logical A4 pages and separates editorial geometry from A4/A3 physical print profiles. The original bounded-artifact rationale remains valid.
