@@ -6,6 +6,23 @@ Kuşluk onboarding should convert existing user context into a useful first edit
 
 The user should not have to remember every newsletter, feed, or recurring source they already receive. Where the user explicitly connects an account, Kuşluk should help discover useful sources and ask how each source should participate in the publication.
 
+Onboarding also needs to establish the physical/delivery environment without turning setup into printer administration.
+
+## Morning and delivery setup
+
+The first-run flow should establish, where relevant:
+- configured edition-ready deadline (default 08:00 local time);
+- home/default location;
+- A4 Home Printer and/or A3 Folded Newspaper profile;
+- printer selection/capabilities when a local host can inspect them;
+- explicit paper profile when the user cares about stock/colour;
+- print vs digital fallback policy;
+- travel behaviour (pause, digital-only while away, or another explicit policy);
+- optional control surfaces such as Apple Shortcuts;
+- languages and initial beats/interests.
+
+The normal daily experience should not require reopening onboarding.
+
 ## Newsletter discovery
 
 If the user connects an email account, Kuşluk should be able to identify likely newsletters and recurring editorial mail.
@@ -137,6 +154,10 @@ By default:
 
 A local model or deterministic parser may be used for discovery/classification where practical.
 
+## Travel-source discovery
+
+Where the user enables relevant connectors, Kuşluk may use reliable travel signals from calendar events, train/flight tickets or confirmations in connected mail, and provider/app data exposed through a connector. These signals are used to decide print-vs-digital behaviour and destination context; they are not a reason to build a permanent travel-history database.
+
 ## Reconfiguration
 
 Newsletter rules are not permanent.
@@ -147,6 +168,11 @@ The user should be able to:
 - promote/demote priority;
 - remove it from Kuşluk;
 - rescan for newly subscribed newsletters;
-- review sources that have gone inactive.
+- review sources that have gone inactive;
+- change printer/print profile;
+- change edition deadline;
+- pause/snooze printing;
+- choose digital-only for a day;
+- reprint the current archived edition.
 
 A periodic lightweight “new sources found” prompt is preferable to forcing the user to repeat onboarding.
