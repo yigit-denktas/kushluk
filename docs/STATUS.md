@@ -1,35 +1,33 @@
 # Kuşluk Status
 
-Last updated: 2026-09-23.
+Last updated: 2026-10-07.
 
 ## Repository hygiene
 
 - Default branch: `main`.
-- Working branches: none.
-- Open pull requests: none.
-- Closed/merged pull requests: none found.
-- Current work is committed directly to `main`; there is no dangling review branch or active PR.
-- CI on the current Stage 1 implementation is expected to remain green before work is considered settled.
-
-GitHub pull-request objects are historical records and are not normally "deleted" after merge; Kuşluk currently has no PR records to clean up anyway.
+- Current durable execution queue: `docs/WORK_LEDGER.md`.
+- Target unattended production architecture: `docs/FULL_AUTOMATION.md`.
+- CI should remain green before implementation changes are considered settled.
 
 ## Stage status
 
 ### Stage 0 — Product definition
 
-Effectively complete for implementation purposes.
+**Complete enough for implementation.**
 
-The product, requirements, architecture, editorial rules, design direction, privacy boundary, onboarding, failure policy, upstream policy, roadmap and ADRs are recorded.
+The product, requirements, architecture, editorial rules, design direction, privacy boundary, onboarding, failure policy, roadmap, work ledger, and ADRs are recorded.
 
-Unresolved choices are isolated in `OPEN_DECISIONS.md` rather than blocking unrelated work.
+Two consequential decisions were added after the original Stage 0 pass:
+- ADR 0013 — four logical A4 pages with multiple print profiles;
+- ADR 0014 — edition-scoped morning intent.
 
 ### Stage 1 — Walking skeleton
 
-**Active. Software path implemented; physical/local proof pending.**
+**Active. Existing software path works; canonical-format migration and real-world proof are pending.**
 
-Executable path:
+Current executable implementation:
 
-`weather + calendar + RSS -> canonical candidates -> clustering/ranking -> publication -> A4 HTML -> validated PDF -> print/email -> archive`
+`weather + calendar + RSS -> candidates -> clustering/ranking -> publication -> one-page A4 HTML -> validated PDF -> print/email -> archive`
 
 Available commands:
 
@@ -66,7 +64,7 @@ Available commands:
 ### Reliability
 - typed failures;
 - graceful source degradation;
-- one-page PDF validation;
+- one-page PDF validation in the current implementation;
 - editorial cut/retry rather than typography shrinking;
 - overflow PDF kept as debug output rather than printed.
 
@@ -81,35 +79,45 @@ Available commands:
 - run/failure/delivery summary;
 - archive listing;
 - runtime doctor;
-- CI tests, linting and full walking-skeleton smoke test.
+- CI tests, linting and walking-skeleton smoke test.
 
-## Intentionally not completed automatically
+## Decided but not yet implemented
 
-### Needs a product/design decision
-- whether the A3 105/210/105 gatefold supersedes A4 duplex or remains an extended format;
-- final production typefaces / locked print design.
+- migrate publication schema/rendering/validation from one page to **four logical A4 pages**;
+- A4 Home Printer profile: two A4 sheets, duplex where supported, optional staple marks;
+- A3 Folded Newspaper profile: duplex A3 booklet imposition `4 | 1` / `2 | 3`;
+- optional edition-scoped morning intent;
+- layout-manifest/archetype layer;
+- automated media acquisition, crop, caption/credit, placement and fallback;
+- stable orchestration boundary for native schedulers, n8n, Apple Shortcuts, or future services.
 
-### Needs local/private setup
-- the machine/server that runs Kuşluk at 08:00;
-- access to the real printer;
-- a real personal calendar/task source;
-- SMTP credentials if email is enabled;
-- any X/social credentials or provider setup.
+## Needs local/private setup or evidence
 
-### Needs evidence from real use
-- real printer error mapping;
-- final editorial density;
-- reading-time calibration;
-- paper-stock behaviour;
-- serendipity tuning;
-- five-edition reality trial.
+- choose the real always-on/local runtime host;
+- connect the real printer;
+- connect a real task source and preferred personal calendar/mail providers;
+- configure SMTP if email delivery is wanted;
+- run at least five real morning editions;
+- physically compare A4 stapled and A3 folded output;
+- tune density, reading time, paper behaviour, image handling, and failure mapping from evidence.
 
-## Next decision boundary
+## Research queue
 
-No further architecture decision is required to run the current A4 walking skeleton.
+The work ledger tracks dedicated spikes for:
+- modern newspaper closing/page-production workflow;
+- n8n vs native scheduler vs Apple Shortcuts;
+- Canva structured template population;
+- Adobe/Creative Cloud/InDesign-like automation;
+- automated image acquisition/placement and rights policy.
 
-The next consequential product decision is the **canonical physical format**:
-- A4 duplex remains default; A3 gatefold is an optional/extended edition, or
-- A3 gatefold supersedes ADR 0002 and becomes the default physical object.
+## Next execution boundary
 
-Until that is decided, implementation continues to respect the accepted A4 default.
+The next implementation slice is not another format decision. It is:
+
+1. migrate the canonical publication/rendering/validation path to four logical A4 pages;
+2. implement the A4 and A3 print profiles;
+3. establish the stable unattended-run boundary;
+4. add asset/media handling;
+5. run real physical editions.
+
+See `docs/WORK_LEDGER.md` for task IDs and acceptance criteria.
