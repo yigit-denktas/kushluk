@@ -7,6 +7,7 @@ Last updated: 2026-10-07.
 - Default branch: `main`.
 - Current durable execution queue: `docs/WORK_LEDGER.md`.
 - Target unattended production architecture: `docs/FULL_AUTOMATION.md`.
+- Recovered project-chat decisions/ideas: `docs/CHAT_RECONCILIATION.md`.
 - CI should remain green before implementation changes are considered settled.
 
 ## Stage status
@@ -15,7 +16,7 @@ Last updated: 2026-10-07.
 
 **Complete enough for implementation.**
 
-The product, requirements, architecture, editorial rules, design direction, privacy boundary, onboarding, failure policy, roadmap, work ledger, and ADRs are recorded.
+The product, requirements, architecture, editorial rules, design direction, privacy boundary, onboarding, failure policy, roadmap, work ledger, ADRs, and recovered chat-history decisions/ideas are recorded.
 
 Two consequential decisions were added after the original Stage 0 pass:
 - ADR 0013 — four logical A4 pages with multiple print profiles;
