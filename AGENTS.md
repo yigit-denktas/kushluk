@@ -38,6 +38,8 @@ When documents conflict, resolve in this order:
 7. `docs/WORK_LEDGER.md`
 8. `docs/ROADMAP.md` and stage-specific implementation backlog
 
+`docs/CHAT_RECONCILIATION.md` is a non-normative recovery register: it preserves ideas and historical decisions from project chats, including candidates/rejected/superseded items. It never overrides ADRs or canonical requirements.
+
 `docs/OPEN_DECISIONS.md` records unresolved choices and never overrides accepted ADRs.
 
 Do not silently reinterpret a recorded decision. Propose a new ADR when changing architecture or a non-trivial product invariant.
@@ -106,6 +108,8 @@ Reuse permissively licensed upstream components when they save time, but:
 - do not make an upstream project a hard product dependency without an ADR.
 
 See `docs/UPSTREAM_REVIEW.md` before introducing a new upstream dependency.
+
+When a future conversation introduces a consequential idea or decision, classify it and persist it in the appropriate canonical document/ADR or in `docs/CHAT_RECONCILIATION.md`; do not leave durable project state only in chat history.
 
 ## Stop conditions / decisions
 
