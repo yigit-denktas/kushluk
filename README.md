@@ -2,7 +2,7 @@
 
 **Kuşluk** is a local-first, print-first personal daily newspaper.
 
-The project turns a user's day, interests, selected information sources, and public signals into a concise morning edition designed to be read away from a screen. The current canonical physical artifact is one DIN A4 sheet, ideally duplex, ready by 08:00 local time.
+The project turns a user's day, interests, selected information sources, and public signals into a concise morning edition designed to be read away from a screen. The canonical edition is now **four logical DIN A4 pages**. Those same logical pages can be delivered as two duplex A4 sheets for ordinary home printers or imposed onto one duplex A3 sheet and half-folded to A4. The target remains a ready-to-read edition by 08:00 local time.
 
 > Working principle: **selection over collection; reliability before cleverness.**
 
@@ -12,11 +12,12 @@ Kuşluk is being developed as an open, provider-independent system rather than a
 
 - **Local-first personal data plane.** Personal context stays on the user's device or infrastructure by default.
 - **Print-first.** The primary surface is a compact physical edition; HTML, email, e-readers, and richer digital surfaces are secondary.
-- **One sheet by default.** Front: practical “Today”. Back: personal “For You”. Single-sided fallback is allowed where duplex printing is unavailable.
+- **One editorial geometry, multiple print profiles.** Four logical A4 pages are canonical. A4 home printing and A3 folded-newspaper output are imposition profiles, not separate editorial designs.
 - **Adaptive editorial system.** A lead story is optional. Calendar and tasks outrank volatile travel details. Space is protected for serendipity.
 - **Multilingual by design.** Editions may use English, German, Turkish, other user-selected languages, or intentional language mixing.
 - **Provider-independent user model.** The project must survive changes in LLM, search, social, mail, calendar, or printing providers.
-- **Deterministic publication pipeline.** AI can research, rank, and write; rendering and print validation remain deterministic.
+- **Deterministic publication pipeline.** AI can research, rank, write, fit copy, and help resolve assets; rendering, geometry, validation, imposition, and print remain deterministic.
+- **Full automation is the target.** The daily run must not require opening Canva, InDesign, or manually placing stories and images.
 - **Graceful degradation.** Missing integrations remove/degrade blocks rather than silently corrupting the edition.
 - **Source discovery.** Connected accounts can help Kuşluk discover sources the user already chose, such as newsletters, while keeping final source selection explicit.
 
@@ -39,9 +40,9 @@ Implemented:
 - optional-lead layout support without forcing a lead;
 - typed failure records and run summaries;
 - Markdown-first canonical edition;
-- deterministic A4 HTML renderer;
+- deterministic A4 HTML renderer for the current walking skeleton;
 - optional WeasyPrint PDF output;
-- one-page PDF validation with editorial cut/retry passes;
+- one-page PDF validation with editorial cut/retry passes (legacy Stage 1 implementation; migration to four logical pages is now queued under ADR 0013);
 - CUPS printer capability detection and duplex-aware printing;
 - optional SMTP delivery and email-on-print-failure;
 - local edition archive and archive listing;
@@ -51,6 +52,10 @@ Implemented:
 - manually dispatchable sample-edition workflow.
 
 Not complete yet:
+- migration of the current one-page renderer/validator to the four-page canonical model;
+- A4 two-sheet and A3 folded print profiles;
+- unattended orchestration and optional Apple Shortcuts/n8n trigger surfaces;
+- automated image acquisition/cropping/placement pipeline;
 - a real local printer trial;
 - a real personal calendar/task connection beyond generic ICS;
 - configured SMTP credentials if email delivery is wanted;
@@ -59,7 +64,7 @@ Not complete yet:
 - X/social inputs;
 - final production visual system.
 
-See [docs/STATUS.md](docs/STATUS.md) for the live implementation boundary and [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md) for decisions that are intentionally not being made automatically.
+See [docs/STATUS.md](docs/STATUS.md) for the live implementation boundary, [docs/WORK_LEDGER.md](docs/WORK_LEDGER.md) for the complete execution queue, [docs/FULL_AUTOMATION.md](docs/FULL_AUTOMATION.md) for the target press-line architecture, and [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md) for decisions that are intentionally not being made automatically.
 
 ## Quick start
 
@@ -118,6 +123,8 @@ Start with:
 
 - [AGENTS.md](AGENTS.md)
 - [docs/STATUS.md](docs/STATUS.md)
+- [docs/WORK_LEDGER.md](docs/WORK_LEDGER.md)
+- [docs/FULL_AUTOMATION.md](docs/FULL_AUTOMATION.md)
 - [docs/PRODUCT.md](docs/PRODUCT.md)
 - [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
