@@ -198,7 +198,13 @@ Machine/archive identity:
 
 QR codes are functional escape hatches for deeper/live material, not decoration. Keep them small and attributable.
 
-## Prototype guidance
+## Prototype and identity-board guidance
+
+When documenting the physical/design system, prefer system-board clarity over lifestyle mockup theatre:
+- use front-facing/orthographic diagrams for page, fold, grid, and binding geometry;
+- show relevant open / partial / closed states when explaining a physical transformation;
+- keep fold/grid diagrams editable as SVG or equivalent vector geometry;
+- let the design system dominate the board rather than coffee-cup/desk photography.
 
 Use generative visual tools to explore directions, but freeze approved layouts into deterministic HTML/CSS/SVG templates.
 
