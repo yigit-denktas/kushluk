@@ -52,7 +52,7 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 
 - [x] **DOC-01** Record four-page A4/A3 print-profile decision.
 - [x] **DOC-02** Record ephemeral morning intent.
-- [ ] **DOC-03** Update README, Product, Requirements, Architecture, Editorial System, Design Brief, Status, Roadmap, Open Decisions, and Stage 1 backlog so they no longer describe the superseded one-sheet format as canonical.
+- [x] **DOC-03** Update README, Product, Requirements, Architecture, Editorial System, Design Brief, Status, Roadmap, Open Decisions, and Stage 1 backlog so they no longer describe the superseded one-sheet format as canonical.
 - [ ] **DOC-04** Keep this ledger current whenever a consequential task is added, completed, blocked, or abandoned.
 
 ### P1 — Four-page production migration
