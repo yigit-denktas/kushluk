@@ -12,16 +12,18 @@ The project must remain useful when the original user, original conversation, or
 
 1. **Local-first personal data plane.** Personal data remains on infrastructure controlled by the user by default.
 2. **Print-first.** The physical morning edition is the primary product surface.
-3. **One DIN A4 sheet by default.** Prefer duplex; allow single-sided fallback when hardware cannot duplex.
+3. **Four logical DIN A4 pages by default.** Treat A4-home and A3-folded output as print/imposition profiles, not separate editorial designs.
 4. **08:00 local target.** The edition should be ready by 08:00 local time unless the user configures another time.
 5. **Selection over collection.** The product is an editor, not a feed reader.
 6. **Reliability before cleverness.** A modest edition that arrives is better than a brilliant edition that fails.
 7. **Provider independence.** LLM, search, social, mail, calendar, weather, printer, and delivery systems are adapters.
-8. **Deterministic rendering.** Generative systems may prepare content, but layout validation and printing must be deterministic.
+8. **Deterministic production geometry.** Generative systems may research, select, write, fit copy, and suggest assets; layout geometry, validation, imposition, printing, and archiving must be deterministic.
 9. **Graceful degradation.** Missing data removes or replaces a block; it must never create silent holes or corrupt layout.
 10. **No recurring manual data labour.** Personalisation may ask for initial preferences, but must not depend on routine manual exports, tagging, or curation.
 11. **Serendipity is intentional.** Protect space for material outside the user's existing interest bubble.
 12. **Archive is first-class.** Editions and stories need stable identifiers and durable references.
+13. **Full automation is the target.** A normal morning run must not require opening a visual editor or manually placing text/images.
+14. **Orchestrators are replaceable.** n8n, Apple Shortcuts, OS schedulers, and future services may trigger/control Kuşluk but must not own canonical editorial/layout state.
 
 ## Documentation precedence
 
@@ -33,7 +35,8 @@ When documents conflict, resolve in this order:
 4. `docs/ARCHITECTURE.md`
 5. `docs/EDITORIAL_SYSTEM.md`
 6. `docs/DESIGN_BRIEF.md`
-7. `docs/ROADMAP.md` and implementation backlog
+7. `docs/WORK_LEDGER.md`
+8. `docs/ROADMAP.md` and stage-specific implementation backlog
 
 `docs/OPEN_DECISIONS.md` records unresolved choices and never overrides accepted ADRs.
 
@@ -57,13 +60,15 @@ Stage 1 is active and the software walking skeleton is executable.
 
 Current path:
 
-`Open-Meteo + ICS/fixture calendar + RSS -> canonical candidates -> clustering/ranking -> publication -> A4 HTML -> optional validated PDF -> CUPS/SMTP -> archive`
+`Open-Meteo + ICS/fixture calendar + RSS -> canonical candidates -> clustering/ranking -> publication -> current one-page A4 HTML/PDF -> CUPS/SMTP -> archive`
+
+This executable path predates ADR 0013. The accepted target is four logical A4 pages plus A4/A3 print profiles; migration work is tracked in `docs/WORK_LEDGER.md`.
 
 Implemented infrastructure includes:
 - typed failures and run summaries;
 - deterministic story clustering and ranking;
 - optional lead support with no forced lead;
-- one-page PDF validation and editorial cut/retry;
+- one-page PDF validation and editorial cut/retry in the current walking skeleton;
 - printer capability/duplex detection;
 - SMTP delivery and print-failure fallback;
 - archive listing;
@@ -76,9 +81,9 @@ Do not claim Stage 1 is finished until a real local print path and repeated real
 
 The implementation must prove:
 
-`real inputs -> normalized candidates -> publication model -> deterministic A4 HTML -> PDF -> printer/digital fallback -> archive`
+`real inputs -> normalized candidates -> ranked publication -> four logical A4 pages -> validated output -> selected A4/A3 print profile or digital fallback -> archive`
 
-The code path now exists. Remaining proof depends mainly on real local connectors, printer access, and repeated usage.
+The original walking-skeleton code path exists. Remaining work includes four-page migration, print-profile imposition, unattended orchestration, media handling, real local connectors, printer access, and repeated usage.
 
 Do not build a broad agent platform before this loop is proven in reality.
 
