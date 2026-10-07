@@ -64,7 +64,7 @@ Not complete yet:
 - X/social inputs;
 - final production visual system.
 
-See [docs/STATUS.md](docs/STATUS.md) for the live implementation boundary, [docs/WORK_LEDGER.md](docs/WORK_LEDGER.md) for the complete execution queue, [docs/FULL_AUTOMATION.md](docs/FULL_AUTOMATION.md) for the target press-line architecture, and [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md) for decisions that are intentionally not being made automatically.
+See [docs/STATUS.md](docs/STATUS.md) for the live implementation boundary, [docs/WORK_LEDGER.md](docs/WORK_LEDGER.md) for the complete execution queue, [docs/FULL_AUTOMATION.md](docs/FULL_AUTOMATION.md) for the target press-line architecture, [docs/CHAT_RECONCILIATION.md](docs/CHAT_RECONCILIATION.md) for ideas/decisions recovered from prior project chats, and [docs/OPEN_DECISIONS.md](docs/OPEN_DECISIONS.md) for decisions that remain intentionally open.
 
 ## Quick start
 
@@ -125,6 +125,7 @@ Start with:
 - [docs/STATUS.md](docs/STATUS.md)
 - [docs/WORK_LEDGER.md](docs/WORK_LEDGER.md)
 - [docs/FULL_AUTOMATION.md](docs/FULL_AUTOMATION.md)
+- [docs/CHAT_RECONCILIATION.md](docs/CHAT_RECONCILIATION.md)
 - [docs/PRODUCT.md](docs/PRODUCT.md)
 - [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
