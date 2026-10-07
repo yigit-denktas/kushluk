@@ -12,6 +12,10 @@ Use deterministic software for **geometry, typography rules, image-slot placemen
 
 External workflow/design tools may participate, but no external tool should own the canonical publication model.
 
+## Human governance vs unattended operation
+
+Full automation applies to the **normal daily run**. Human judgement remains appropriate for product direction, editorial voice, physical-object choices, template design, source policy, and tuning after real reading/printing. The goal is not to remove design judgement; it is to avoid repeating that judgement manually every morning.
+
 ## Target production chain
 
 ```text
@@ -185,6 +189,17 @@ They should only become part of the unattended daily runtime if a technical spik
 
 Until that proof exists, the production renderer remains HTML/CSS/SVG/PDF based.
 
+## Trigger modes recovered from the founding flow
+
+The default contract should be deadline-based, but the orchestration layer may test additional release/trigger signals:
+- fixed schedule;
+- explicit generate-now action;
+- user wake-up automation;
+- local host becoming available;
+- configured printer becoming reachable.
+
+Wake/device/printer triggers are **capability-dependent experiments**, not requirements that should make the 08:00 deadline unreliable. An early brainstorm used ~07:30 as a possible generation start for an 08:00-ready edition; the exact start time remains configuration/latency logic, not a product invariant.
+
 ## Apple integration
 
 Apple Shortcuts is best treated first as a control/trigger surface:
@@ -195,6 +210,8 @@ Apple Shortcuts is best treated first as a control/trigger surface:
 - “Reprint today’s edition.”
 
 Direct unattended AirPrint behaviour must be verified separately. On a Mac host, the existing CUPS/print path may be a more controllable automation surface than relying on an iPhone/iPad print sheet.
+
+Travel state may be informed by calendar entries, connected travel documents/tickets, or provider/app signals where reliable connectors expose them. When away from the print location, orchestration should default to the configured digital path rather than printing unattended at home.
 
 ## Failure policy
 
