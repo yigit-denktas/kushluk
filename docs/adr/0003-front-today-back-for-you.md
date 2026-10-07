@@ -1,6 +1,6 @@
 # ADR 0003 — Front is Today, back is For You
 
-**Status:** Accepted
+**Status:** Superseded in physical grammar by ADR 0013
 
 ## Decision
 
@@ -16,4 +16,8 @@ The physical sheet should answer immediate practical needs first, then reward de
 
 ## Consequences
 
-Templates and editorial allocation should preserve this distinction while allowing reflow.
+Templates and editorial allocation should preserve the underlying priority distinction while allowing reflow.
+
+## Supersession
+
+ADR 0013 removes the single-sheet front/back geometry. The editorial principle survives as **Today-first, For-You-later** across the four-page reading flow, as recorded in the current Product, Requirements, and Editorial System documents.
