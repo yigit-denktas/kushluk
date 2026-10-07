@@ -2,6 +2,8 @@
 
 Kuşluk uses iterative vertical slices rather than a long waterfall build.
 
+The operational task source is `WORK_LEDGER.md`; this roadmap describes stage-level sequencing.
+
 ## Stage 0 — Define the product
 
 Status: **implementation-ready**
@@ -29,9 +31,9 @@ A future maintainer/orchestrator can explain what Kuşluk is, what it is not, th
 
 Status: **ACTIVE — software path exists; real local proof pending**
 
-Goal: print one real edition end to end.
+Goal: prove one real edition end to end while migrating the original one-page walking skeleton to the accepted four-page production model.
 
-Implemented path:
+Implemented legacy walking-skeleton path:
 - Köln/default weather;
 - generic ICS calendar with fixture fallback;
 - real RSS/Atom stories;
@@ -46,15 +48,24 @@ Implemented path:
 - runtime doctor;
 - CI smoke test.
 
-Remaining proof:
-- configure a real private calendar/task source;
+Immediate migration work (ADR 0013/0014):
+- four logical A4 pages in the publication model;
+- four-page renderer and per-page validation;
+- A4 two-sheet duplex profile and optional staple marks;
+- A3 folded-newspaper imposition;
+- optional morning-intent input;
+- stable unattended-run/orchestrator boundary;
+- media asset acquisition/placement layer.
+
+Remaining real-world proof:
+- configure a real private calendar/task/mail source;
 - run on the chosen local host;
 - reach the real printer;
 - complete at least five real editions;
 - tune from observed failures/read behaviour.
 
 Definition of Done:
-One command produces a real morning edition with no manual HTML editing, the local print/digital path works in the actual environment, and multiple real editions have been completed.
+One unattended trigger produces a real four-page morning edition with no manual HTML/design editing, the selected A4/A3 print or digital path works in the actual environment, and multiple real editions have been completed.
 
 ## Stage 2 — Understand the day
 
@@ -100,13 +111,17 @@ The edition routinely demonstrates useful synthesis rather than feed aggregation
 
 ## Stage 4 — Physical and visual product
 
+Some foundation work begins earlier because four-page migration requires real templates. Stage 4 completes and hardens it.
+
 Add:
-- production design system;
+- production design system and approved layout-archetype family;
 - paper profiles;
 - monochrome/colour modes;
 - printer compatibility testing;
 - refined typography;
 - editorial illustration;
+- automated image-slot/crop/credit quality tuning;
+- external Canva/Adobe template integration only if reliability spikes justify it;
 - accessibility and print legibility testing.
 
 Definition of Done:
@@ -132,6 +147,12 @@ A new user can install Kuşluk, connect supported services, review discovered so
 
 ## Open investigations
 
+Detailed investigation tasks are tracked in `WORK_LEDGER.md`. Current themes include:
+
+- modern newspaper closing/page-production practices and what transfers to Kuşluk;
+- n8n vs native scheduling vs Apple Shortcuts as orchestration/control surfaces;
+- Canva and Adobe structured template population/export reliability;
+- image acquisition, placement, rights, and attribution automation;
 - exact X/Grok Bot capabilities, costs, and reliability;
 - home-printer paper stocks and supported grammage;
 - long-term printer upgrade path, especially monochrome laser/duplex;
