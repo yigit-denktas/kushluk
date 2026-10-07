@@ -8,7 +8,7 @@ Its job is to answer:
 
 > **What is worth my attention this morning, given my actual day and my longer-term interests?**
 
-The default artifact is one DIN A4 sheet, ideally printed front and back, designed for roughly 10–15 minutes of reading.
+The canonical edition is **four logical DIN A4 pages**, designed as one bounded publication. Ordinary home printers can output it as two duplex A4 sheets; A3-capable printers can output the same pages as one duplex A3 sheet imposed and half-folded to A4. Reading-time targets remain deliberately bounded and will be calibrated through physical trials.
 
 ## Primary experience
 
@@ -19,9 +19,7 @@ By the configured morning deadline, default 08:00 local time:
 - if the user is travelling, avoid wasting paper and deliver the edition digitally;
 - adapt weather and relevant context to the travel destination when reliable context exists.
 
-The front side is primarily **Today**: stable commitments and immediate orientation.
-
-The back side is primarily **For You**: editorially selected stories, language material, personal columns, and serendipity.
+The edition should establish **Today** early: stable commitments and immediate orientation receive priority. The remaining page budget can shift toward **For You** material: editorially selected stories, language material, personal columns, and serendipity. The exact page archetype may vary; the logical four-page geometry does not.
 
 ## Why print
 
@@ -44,7 +42,9 @@ Personalisation should come from low-effort or passive signals:
 - historical editions and lightweight feedback;
 - future privacy-preserving reading signals.
 
-Recurring manual tagging, manual exports, or daily preference maintenance are not acceptable foundations.
+Recurring manual tagging, manual exports, daily preference maintenance, or daily manual page assembly are not acceptable foundations.
+
+An optional spoken or typed **morning intent** may influence only the current edition unless the user explicitly saves it as a durable preference.
 
 ### Recovering value from existing subscriptions
 
@@ -84,11 +84,11 @@ Initial development should support English, German, and Turkish well, without ha
 
 ## Future surfaces
 
-Planned, but not MVP:
+Planned beyond the current physical-production migration:
 - e-reader/e-ink editions;
 - richer HTML edition;
 - animated editorial stories for capable digital displays;
-- multi-page or extended editions;
+- extended/special editions beyond the canonical four-page daily;
 - messaging delivery;
 - optional managed-cloud deployment.
 
@@ -109,8 +109,9 @@ A mature Kuşluk installation should reliably:
 1. understand the day's stable commitments;
 2. gather a broad but controlled candidate pool;
 3. select rather than merely aggregate;
-4. produce an attractive bounded edition by the configured deadline;
-5. print when appropriate and fall back digitally when not;
-6. explain material failures;
-7. preserve a durable edition archive;
-8. keep personal data under user control by default.
+4. produce an attractive bounded four-page edition by the configured deadline without manual layout work;
+5. resolve usable images/assets automatically or safely omit them;
+6. print through the configured A4/A3 profile when appropriate and fall back digitally when not;
+7. explain material failures;
+8. preserve a durable edition archive and run trace;
+9. keep personal data under user control by default.
