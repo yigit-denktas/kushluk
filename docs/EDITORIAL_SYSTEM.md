@@ -11,13 +11,21 @@ Core rule:
 ## Edition geometry
 
 Default:
-- one DIN A4 sheet;
-- front: **Today**;
-- back: **For You**;
-- approximately 10–15 minutes of reading;
+- four logical DIN A4 pages;
+- early-page priority for **Today** practical material;
+- remaining page budget for **For You** editorial material;
+- one bounded daily edition rather than an expanding feed;
 - QR/link escape hatches for depth.
 
-The editorial system cuts content to fit the artifact. The artifact does not expand indefinitely to fit the feed.
+The same logical pages are later imposed by the print layer into A4-home or A3-folded output. Editorial logic does not redesign the edition per printer.
+
+The editorial system cuts content to fit the artifact. The artifact does not expand indefinitely to fit the feed. Story-length classes and slot capacity should be decided before final rendering so copy fitting is an editorial operation, not emergency font shrinking.
+
+## Morning intent
+
+An edition may receive a short spoken or typed **morning intent** before retrieval/ranking. It can promote or de-emphasise topics, add questions to answer, or request a denser/lighter edition for that morning. It is edition-scoped by default and must not silently rewrite the durable user profile.
+
+Morning intent never bypasses verification, privacy boundaries, or required practical content.
 
 ## Lead story
 
@@ -186,6 +194,12 @@ When the edition does not fit, cut in this order:
 Only then consider modest copy tightening.
 
 Never solve overflow primarily by making text uncomfortably small.
+
+## Media and asset policy
+
+Images are editorial assets, not decoration. A story may carry one or more image candidates with source, rights/usage status, attribution, caption, dimensions, focal point, crop policy, and verification state.
+
+The layout planner may use only assets that satisfy the target slot's print-resolution and crop constraints. If no suitable asset exists, prefer a text-led or illustrated fallback rather than forcing a bad image.
 
 ## Failure-aware editing
 
