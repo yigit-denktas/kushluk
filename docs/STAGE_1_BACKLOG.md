@@ -2,7 +2,7 @@
 
 ## Stage outcome
 
-Produce a real DIN A4 Kuşluk edition end to end with no hand-edited HTML.
+Produce a real Kuşluk edition end to end with no hand-edited HTML or manual design-tool assembly. The accepted target is four logical DIN A4 pages with profile-specific physical output.
 
 Status: **ACTIVE — software walking skeleton implemented; real-world proof pending**
 
@@ -93,23 +93,24 @@ Implemented:
 - monochrome-safe warm editorial v0;
 - optional WeasyPrint PDF rendering.
 
-Blocked/decision-dependent:
-- final production typography;
-- final A4-vs-A3-gatefold physical system;
-- final front/back production templates.
+Next migration:
+- four logical A4 pages;
+- finite page-archetype family and layout manifest;
+- A4 Home Printer and A3 Folded Newspaper output profiles;
+- final production typography after physical tests.
 
 ## Epic 7 — Validation and cut loop — DONE (v0)
 
 Implemented:
 - canonical publication preflight;
 - link checks;
-- expected one-page PDF validation;
+- current one-page PDF validation (legacy walking skeleton);
 - deterministic editorial compaction;
 - repeated render/check/cut loop;
-- malformed multi-page output prevented from being sent to the printer;
+- malformed output prevented from being sent to the printer;
 - overflow debug PDF preservation.
 
-Future validation can add minimum-type-size and geometry regression fixtures.
+Next validation work must replace the one-page assumption with four-page identity/order, per-page overflow, image-resolution/crop checks, binding/fold safe areas, and imposition regression fixtures.
 
 ## Epic 8 — Printing — SOFTWARE DONE (v0), PHYSICAL TRIAL PENDING
 
@@ -161,14 +162,16 @@ This path is exercised by CI, including a walking-skeleton smoke test.
 
 ## What now genuinely blocks completion
 
-These are not safe to invent inside the repository:
+The physical-format decision is resolved by ADR 0013. Completion now depends on implementation and local evidence:
 
-1. **Physical-format decision:** keep A4 duplex canonical or supersede it with the explored A3 gatefold.
-2. **Local runtime host:** decide where the 08:00 job actually runs so it can reach the printer and private connectors.
-3. **Personal connector setup:** provide/configure a real calendar source and task source.
-4. **Delivery credentials:** SMTP config if email fallback is wanted.
-5. **Physical trial:** print on the actual printer and run at least five real morning editions.
-6. **Production visual lock:** final typography/layout after physical tests.
+1. **Four-page migration:** update publication schema, renderer, validator, and archive assumptions.
+2. **Print profiles:** implement A4 two-sheet duplex and A3 folded-newspaper imposition.
+3. **Local runtime host:** decide where the scheduled morning job runs so it can reach the printer and private connectors.
+4. **Personal connector setup:** provide/configure real calendar, task, and mail sources.
+5. **Delivery credentials:** SMTP config if email fallback is wanted.
+6. **Physical trial:** print on the actual printer and run at least five real morning editions.
+7. **Production visual lock:** final typography/layout after A4/A3 physical tests.
+8. **Full automation layer:** stable trigger boundary, idempotent runs, media assets, and optional orchestration via native scheduler/n8n/Apple Shortcuts.
 
 ## Reality trial
 
@@ -184,3 +187,5 @@ Record:
 - printer reliability.
 
 Use this evidence to reprioritise Stage 2.
+
+Cross-stage details, research spikes, automation, template, and image-pipeline work live in `WORK_LEDGER.md`.
