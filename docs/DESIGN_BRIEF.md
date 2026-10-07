@@ -10,6 +10,12 @@ The central tension is:
 
 Technology should disappear into editorial craft. The final object should feel finite, calm, warm, tactile, literate, and contemporary.
 
+A recurring product/brand line from the founding conversations is:
+
+> **The internet has already been filtered. You can stop scrolling.**
+
+Treat it as conceptual brand language rather than compulsory masthead copy.
+
 ## Identity
 
 The primary identity is the exact wordmark:
@@ -17,6 +23,8 @@ The primary identity is the exact wordmark:
 **Kuşluk**
 
 Use capital **K** followed by lowercase **uşluk**. Preserve the Turkish **ş**. Do not make all-caps `KUŞLUK` the primary masthead.
+
+The name comes from **kuşluk vakti**, the late-morning period after sunrise and before noon; the intended association is roughly the 09:00–11:00 part of the day rather than a fixed clock time. This reinforces the product as a morning ritual, not a generic news app.
 
 The wordmark should use a high-contrast editorial serif with:
 - a strong capital K;
@@ -45,7 +53,7 @@ Material-first prototype palette:
 - Warm Grey — `#9A958D`
 - Ink Black — `#1A1A1A`
 
-Colour should often come from paper stock or a restrained spot-like accent rather than full-page ink coverage.
+Colour should often come from paper stock or a restrained spot-like accent rather than full-page ink coverage. Prefer real coloured/warm stock plus black or low-coverage ink to printing large synthetic background fields on ordinary home printers.
 
 The system must remain legible in monochrome.
 
@@ -106,6 +114,7 @@ Typography should survive inexpensive home printers.
 Start from newspaper/magazine composition rather than a component-card UI.
 
 Use:
+- a **six-column editorial base grid** on each logical A4 page; merge columns into wider measures as needed rather than forcing six visible text columns;
 - a rigorous underlying column grid;
 - thin rules;
 - variable headline scale;
@@ -122,6 +131,10 @@ Across the four logical pages:
 - later pages may carry denser editorial stories, language material, illustration, and curiosity;
 - no page is required to manufacture a hero story;
 - page archetypes may vary while the underlying grid and design tokens remain stable.
+
+## Morning ritual
+
+The designed object is part of a domestic morning ritual: the edition should be ready with as little screen interaction as possible, picked up from the printer, optionally stapled in the A4-home profile, and read away from notifications. Computation should feel invisible at the point of reading.
 
 ## Physical object
 
