@@ -7,17 +7,26 @@ Kuşluk separates **personal context**, **research/editorial intelligence**, and
 ## High-level pipeline
 
 ```text
-Connectors
-  -> Personal Data Plane
+Trigger / Orchestrator
+  -> Run Context + Optional Morning Intent
+  -> Connectors / Personal Data Plane
   -> Candidate Normalisation
   -> Research / Verification
   -> Editorial Engine
-  -> Publication Model
-  -> Deterministic Renderer
-  -> Layout Validator
+  -> Media Asset Resolution
+  -> Publication + Layout Manifest
+  -> Deterministic Four-Page Renderer
+  -> Layout / Asset Validator
+  -> Print-Profile Imposition
   -> Print / Digital Delivery
-  -> Edition Archive
+  -> Edition + Run Archive
 ```
+
+## Orchestration boundary
+
+Kuşluk exposes a stable run boundary that may be triggered by the CLI, an OS scheduler, n8n, Apple Shortcuts, or a future service. Orchestrators may schedule, pass edition-scoped intent, pause/reprint, and observe status; they must not own ranking rules, canonical schemas, layout geometry, or archive state.
+
+The core run should be idempotent for a date/edition so retries do not silently generate duplicate print jobs.
 
 ## Personal data plane
 
@@ -103,7 +112,7 @@ The renderer never performs editorial reasoning.
 
 ## Canonical publication model
 
-The canonical edition should be representable as Markdown plus structured metadata.
+The canonical edition should be representable as Markdown plus structured metadata, including four logical page identities and a layout manifest independent of the final printer profile.
 
 Why:
 - durable;
@@ -129,16 +138,23 @@ Suggested initial stack:
 - CUPS/`lp` print adapter.
 
 The validator enforces:
-- DIN A4 geometry;
-- page count;
+- four logical DIN A4 pages;
+- page identity/order and page count;
 - overflow;
 - minimum readable typography;
 - required blocks;
+- image/asset suitability and effective print resolution;
 - link/QR integrity where practical.
 
 If validation fails, the editorial cut policy runs and rendering repeats.
 
+## Media asset subsystem
+
+The asset resolver manages source images/illustrations as typed assets with provenance, rights/usage state, attribution, dimensions, focal point, crop policy, and cache/archive identity. Layout slots consume these assets deterministically. Missing or unsuitable imagery must degrade to another asset or a text-led layout rather than blocking the edition.
+
 ## Print subsystem
+
+The print layer receives four logical A4 pages and applies a physical profile. Initial profiles are A4 two-sheet duplex, A3 duplex half-fold booklet imposition (`4 | 1` / `2 | 3`), and single-sided A4 fallback.
 
 The print adapter should:
 - enumerate configured printer capabilities where possible;
