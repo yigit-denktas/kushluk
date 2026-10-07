@@ -85,12 +85,37 @@ Derived local state, for example:
 
 Must be inspectable, exportable, and deletable.
 
-### 7. Public candidates
+### 7. Morning intent
+
+Edition-scoped spoken/typed intent may be normalised into temporary editorial cues such as promoted topics, demoted topics, questions, and density preference.
+
+Retention:
+- raw audio: do not retain by default;
+- transcript/raw text: keep only as long as required for the configured run/debug policy;
+- normalised cues: may be stored with the edition for reproducibility, but must not silently mutate the durable user model.
+
+### 8. Public candidates
 News/RSS/web items may be cached locally for editorial processing.
 
 Cache should record source URL, retrieval time, and source identity.
 
-### 8. Editions
+### 9. Media assets
+
+Selected/candidate media may record:
+- original source/reference;
+- local/cache path;
+- rights/usage state;
+- attribution;
+- caption and alt text;
+- width/height and effective print resolution;
+- aspect ratio;
+- focal point;
+- crop policy;
+- verification state.
+
+Retain the selected asset or reproducible reference with the edition when needed to regenerate the same output.
+
+### 10. Editions
 Each edition should preserve:
 - edition ID;
 - generation timestamp;
@@ -100,7 +125,12 @@ Each edition should preserve:
 - story IDs;
 - source references;
 - delivery outcome;
-- validation result.
+- validation result;
+- logical page identities/order;
+- layout archetype/manifest;
+- selected print profile;
+- run/delivery state;
+- selected asset references needed for reproducibility.
 
 HTML/PDF are derived artefacts and may be regenerated where deterministic inputs are preserved.
 
@@ -154,6 +184,8 @@ Users must be able to remove:
 - source caches;
 - user model;
 - edition archive;
-- feedback history.
+- feedback history;
+- retained morning-intent transcripts/cues where configured;
+- cached media assets.
 
 Deletion should not depend on contacting a central Kuşluk service in local/self-hosted mode.
