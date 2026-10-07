@@ -56,6 +56,14 @@ Useful patterns:
 Kuşluk decision:
 Adopt the publication-contract and validation-loop concepts. No code is incorporated by this review.
 
+## Earlier chat references needing rediscovery
+
+Two additional names appeared in earlier project research but the exact repositories/URLs and licences were not preserved in the durable project record:
+- **RSSPub** — discussed around EPUB/e-ink/OPDS-style delivery ideas;
+- **Atlas** — discussed around research/scoring ideas.
+
+Treat these as historical leads only. Rediscover and verify the exact source/licence before copying code, adopting architecture, or adding them to third-party notices as concrete projects.
+
 ## Review result
 
 Stage 1 can proceed without an upstream runtime dependency.
