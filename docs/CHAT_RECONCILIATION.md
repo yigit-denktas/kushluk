@@ -194,6 +194,16 @@ Recovered production preference:
 - use sparingly;
 - not a mascot or a compulsory badge in every block.
 
+### HISTORICAL/CURRENT — Identity-board presentation grammar
+
+The original brand-system exploration was explicitly an **identity board/system diagram**, not a fake lifestyle newspaper mockup. Useful presentation rules from that phase:
+- front-facing/orthographic views where geometry matters;
+- show open / partially folded / closed physical states when explaining the object;
+- prefer editable SVG/flat geometry for fold and grid diagrams;
+- keep lifestyle photography secondary to the system itself.
+
+The exact old gatefold geometry is superseded, but the presentation discipline remains useful for documenting the current A4/A3 profiles.
+
 ### CURRENT — Edition identity
 
 Previously proposed/accepted examples remain useful:
@@ -378,6 +388,10 @@ This does **not** mean the human manually lays out each daily edition.
 The intended split is:
 - humans govern and design the system;
 - the normal daily run is unattended.
+
+### CANDIDATE — Local print deployment tactic
+
+Earlier architecture discussion treated driverless/network **CUPS/IPP**, including a container/home-server style deployment, as a viable boring-infrastructure path. This is an implementation option rather than a product invariant and should be tested against the actual printer/network.
 
 ### CANDIDATE — Trigger surfaces
 
@@ -611,7 +625,19 @@ Printer purchasing recommendations should be revisited against current models, c
 
 ---
 
-## 13. Reconciliation summary
+## 13. Project working-method decisions
+
+### CURRENT — Proceed without unnecessary decision gates
+
+Earlier project work explicitly preferred continuing autonomously on reversible implementation/research work and stopping only for genuine user decisions, credentials, or physical access.
+
+Repository hygiene should avoid abandoned active branches/PRs. Historical merged PR records are GitHub records and should not be treated as deletable project state.
+
+### CURRENT — Review upstream before rebuilding plumbing
+
+Before greenfield implementation of generic infrastructure, check the reviewed upstream/reference projects first. Reuse/adapt only at clear seams with licence/provenance discipline; do not wholesale-fork another product's assumptions.
+
+## 14. Reconciliation summary
 
 ### Current decisions that must survive future refactors
 
