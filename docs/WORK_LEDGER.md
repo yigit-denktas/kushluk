@@ -54,6 +54,7 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 - [x] **DOC-02** Record ephemeral morning intent.
 - [x] **DOC-03** Update README, Product, Requirements, Architecture, Editorial System, Design Brief, Status, Roadmap, Open Decisions, and Stage 1 backlog so they no longer describe the superseded one-sheet format as canonical.
 - [ ] **DOC-04** Keep this ledger current whenever a consequential task is added, completed, blocked, or abandoned.
+- [x] **DOC-05** Reconcile prior project-chat decisions/ideas into `CHAT_RECONCILIATION.md` and promote stable items into canonical docs.
 
 ### P1 — Four-page production migration
 
@@ -68,6 +69,7 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 - [ ] **FMT-07** Add single-sided A4 fallback when duplex is unavailable.
 - [ ] **FMT-08** Extend printer capability/profile selection without changing editorial layout.
 - [ ] **FMT-09** Add print fixtures for margins, fold safety, binding safety, rotation, and duplex edge choice.
+- [ ] **FMT-10** Add paper/profile preflight: detect incompatible media where the platform exposes it; otherwise rely on explicit paper-profile configuration without pretending the printer knows stock/colour.
 
 ### P1 — Daily full automation
 
@@ -81,6 +83,8 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 - [ ] **AUT-08** Investigate the practical Apple printing path: what can be automated through macOS printing/CUPS versus what AirPrint/iOS requires interactively.
 - [ ] **AUT-09** Add run-state observability: started, sources complete, editorial complete, rendered, validated, submitted to printer, printed/failed, digitally delivered.
 - [ ] **AUT-10** Add recovery semantics so a failed print never causes editorial regeneration unless explicitly requested.
+- [ ] **AUT-11 (RESEARCH)** Test wake-up, local-host-availability, and printer-reachability triggers as optional release signals without weakening the configured deadline.
+- [ ] **AUT-12** Keep exact pipeline start time adaptive/configurable; an earlier ~07:30 idea is only a scheduling heuristic for an 08:00-ready edition.
 
 ### P1 — Source acquisition and editorial input
 
@@ -93,6 +97,7 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 - [ ] **SRC-07** Preserve original source URLs/message references and timestamps through synthesis.
 - [ ] **SRC-08** Strengthen claim verification for material stories.
 - [ ] **SRC-09** Deduplicate newsletters, RSS, social, and web coverage into story clusters.
+- [ ] **SRC-10** Add travel-context signal adapters from calendar plus connected ticket/confirmation/provider sources without building a permanent travel-history corpus.
 
 ### P1 — Automated image acquisition and placement
 
@@ -116,6 +121,9 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 - [ ] **LAY-06** Build at least three production-ready archetypes: balanced day, news-heavy day, and schedule/practical-heavy day.
 - [ ] **LAY-07** Add deterministic layout scoring/selection based on the publication manifest.
 - [ ] **LAY-08** Freeze approved explorations into HTML/CSS/SVG templates and regression fixtures.
+- [ ] **LAY-09** Implement/test the six-column A4 base grid with shared inner binding/fold safety.
+- [ ] **LAY-10 (RESEARCH)** Test the recovered editorial vocabulary (`WORTH KNOWING`, `FROM YESTERDAY`, `SINCE WE LAST LOOKED`, `NEARBY`, `ONE SMALL THING`, `WORD OF THE DAY`, `TEN MINUTES`, `GO DEEPER →`) without turning every label into a permanent box.
+- [ ] **LAY-11 (RESEARCH)** Test small maps, tiny charts/sparklines, source-confidence display, and per-item reading-time estimates for actual print value.
 
 ### P2 — External design-tool integration
 
@@ -151,6 +159,8 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 - [ ] **UX-04** Controls: pause/snooze, print/digital-only, reprint, generate now.
 - [ ] **UX-05** Controls: choose A4 Home Printer / A3 Folded Newspaper when multiple profiles are available.
 - [ ] **UX-06** Surface failures in human language without exposing implementation noise.
+- [ ] **UX-07** Preserve the physical morning ritual in UX: minimal screen interaction, pick up/optionally staple A4 output, or fold/use A3 output.
+- [ ] **UX-08 (PLANNED)** Add later messaging delivery (WhatsApp was an explicit example in the founding chats) only through an appropriate replaceable connector.
 
 ### P1/P2 — Real-world proof
 
