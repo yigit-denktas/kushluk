@@ -5,18 +5,20 @@ Normative terms **MUST**, **SHOULD**, and **MAY** are used intentionally.
 ## Product
 
 - The system **MUST** generate a personalised daily briefing.
-- The default physical format **MUST** be DIN A4.
-- The default edition **MUST** target one sheet.
-- Duplex printing **SHOULD** be used when supported.
-- Single-sided printing **MUST** be allowed when duplex is unavailable.
+- The canonical edition geometry **MUST** be four logical DIN A4 pages.
+- The editorial/layout model **MUST NOT** fork into separate A4 and A3 designs solely because of printer paper size.
+- The system **MUST** support an A4 Home Printer profile using two A4 sheets, preferably duplex.
+- The system **MUST** support an A3 Folded Newspaper profile using one duplex A3 landscape sheet imposed as outside `4 | 1` and inside `2 | 3`, then half-folded to A4.
+- Single-sided A4 printing **MUST** be allowed when duplex is unavailable.
 - The edition **MUST** target readiness by 08:00 local time by default.
 - The target reading time **SHOULD** be 10–15 minutes; this is a soft target, not a hard truncation rule.
 - The system **MUST NOT** force a lead story when no story deserves that treatment.
 
-## Front / back structure
+## Edition hierarchy
 
-- The front **SHOULD** emphasise practical "Today" material.
-- The back **SHOULD** emphasise personal/editorial "For You" material.
+- Page 1 and the early reading flow **SHOULD** emphasise practical "Today" material and immediate orientation.
+- Later page budget **SHOULD** allow more personal/editorial "For You" material.
+- The exact four-page archetype **MAY** vary with the day's content; page geometry remains fixed.
 - Calendar and task commitments **MUST** outrank detailed travel information on the printed page.
 - Volatile travel details **SHOULD** be reduced to stable reminders, identifiers, or pointers to live apps.
 
@@ -28,7 +30,8 @@ The system **MUST** be able to represent:
 - tasks;
 - selected news/editorial stories;
 - source links and QR destinations;
-- explicit failure/unavailability states.
+- explicit failure/unavailability states;
+- media assets with provenance, attribution, dimensions, crop/focal-point metadata, and suitability state.
 
 The architecture **SHOULD** support later:
 - newsletters;
@@ -71,6 +74,9 @@ The architecture **SHOULD** support later:
 ## Personalisation
 
 - A user **MUST** be able to declare initial interests/beats.
+- The system **MAY** accept an optional spoken or typed edition-scoped morning intent.
+- Morning intent **MUST NOT** silently become a durable preference.
+- Morning intent **MUST NOT** bypass source verification, privacy boundaries, or required practical content.
 - Beats **MUST** be omittable when nothing material happened.
 - Personalisation **MUST NOT** require recurring manual exports, tagging, or preference maintenance.
 - The user model **MUST** remain provider-independent and inspectable.
@@ -83,6 +89,14 @@ The architecture **SHOULD** support later:
 - The system **MUST** support a single-language edition mode.
 - The system **MAY** intentionally mix languages within or across sections.
 - Language mixing **MUST** be deliberate, not accidental model drift.
+
+## Automation and orchestration
+
+- The mature daily run **MUST** be executable without opening a visual editor or manually placing stories/images.
+- The core application **MUST** expose a stable trigger boundary usable by CLI, OS schedulers, workflow engines such as n8n, and control surfaces such as Apple Shortcuts.
+- External orchestrators **MUST NOT** become the canonical store for ranking rules, publication state, layout geometry, or edition history.
+- Scheduled/retried runs **SHOULD** be idempotent for an edition and **MUST NOT** silently create duplicate print jobs.
+- The system **SHOULD** expose machine-readable run states and material failures.
 
 ## Travel and delivery
 
@@ -100,13 +114,16 @@ The architecture **SHOULD** support later:
 - The system **MUST NOT** require a central behavioural database.
 - A future managed-cloud mode **MAY** exist but **MUST** be treated as a distinct operating mode with explicit privacy/compliance design.
 
-## Rendering and print
+## Rendering, assets, and print
 
-- Rendering **MUST** be deterministic after the publication model is finalised.
-- Layout overflow **MUST** be detected before printing.
-- Content cuts **MUST** occur before reducing typography below readability thresholds.
+- Rendering **MUST** be deterministic after the publication/layout manifest is finalised.
+- The renderer **MUST** produce four logical A4 pages before print-profile imposition.
+- Layout overflow **MUST** be detected per page before printing.
+- Content cuts or archetype substitutions **MUST** occur before reducing typography below readability thresholds.
+- Image assets **MUST** be validated for target-slot geometry and effective print resolution; unsuitable images **MUST** fall back safely rather than forcing a broken layout.
 - The print subsystem **MUST** use an adapter boundary.
-- CUPS/`lp` is the preferred initial print backend.
+- Physical imposition **MUST** belong to the print layer rather than editorial reasoning.
+- CUPS/`lp` is the preferred initial local print backend.
 - The system **SHOULD** query printer capabilities where possible.
 - The system **MUST NOT** assume the printer can identify paper colour, stock, or intent automatically.
 - Paper characteristics **SHOULD** be represented as explicit user/configuration profiles.
@@ -132,4 +149,4 @@ The architecture **SHOULD** support later:
 
 Stage 1 **MUST** produce, without hand-editing HTML:
 
-`real input(s) -> canonical candidates -> ranked publication -> DIN A4 HTML -> PDF -> print/digital result -> archive`
+`real input(s) -> canonical candidates -> ranked publication -> four logical A4 pages -> validated PDF -> selected print profile/digital result -> archive`
