@@ -3,21 +3,18 @@
 Only decisions that materially change product direction belong here.
 Implementation should continue around them when possible.
 
-## 1. Canonical physical format
+## 1. Final production typefaces
 
-Current accepted ADR 0002 says the default physical edition is one DIN A4 sheet, preferably duplex.
+Playfair Display + Inter remain safe prototype choices for layout development.
 
-Recent visual exploration introduced a second concept: one A3 landscape sheet (420 × 297 mm) with a 105 / 210 / 105 mm gatefold that closes to A4.
+The final production typefaces should be chosen after:
+- four-page template prototypes exist;
+- A4 stapled and A3 folded physical tests have been printed;
+- inexpensive home-printer reproduction has been checked;
+- licensing/embedding requirements have been reviewed.
 
-No implementation work needs to stop: Stage 1 remains A4 because that is the accepted architecture decision.
+This does not block the four-page renderer or automation work.
 
-Decision needed later:
-- keep A4 duplex as the canonical/default edition and treat A3 gatefold as an extended format; or
-- supersede ADR 0002 and make the A3 gatefold the canonical format.
+## Resolved since the previous register
 
-## 2. Final production typefaces
-
-Playfair Display + Inter are safe prototype choices for layout development.
-The final brand typefaces can be chosen later after print tests and licensing review.
-
-This does not block Stage 1.
+The canonical physical-format decision is no longer open. ADR 0013 supersedes ADR 0002: Kuşluk uses four logical A4 pages with A4 Home Printer and A3 Folded Newspaper print profiles.
