@@ -33,12 +33,17 @@ Action: preserve generated artefacts, notify explicitly, attempt configured fall
 | LLM/editorial model unavailable | DEGRADED/FAILED | Use deterministic/simple fallback if available | Yes if quality materially reduced or edition fails |
 | Renderer failure | FAILED | Keep canonical publication data | Yes |
 | Layout overflow after cut retries | FAILED | Do not print malformed page; preserve debug artefact | Yes |
+| Image unavailable/unsuitable | INFO/DEGRADED | Try another verified asset or switch to text-led layout | Only if imagery was essential to the promised content |
+| Image attribution/rights state unresolved | DEGRADED | Do not use the asset; substitute or go text-only | No unless it materially changes the edition |
 | Printer offline | FAILED delivery | Send digital fallback | Yes |
 | Printer out of paper (detectable) | FAILED delivery | Send digital fallback | Yes |
+| Requested paper/profile incompatible with detectable printer media | FAILED delivery/DEGRADED | Do not knowingly submit a bad job; preserve edition and use configured fallback | Yes, with remediation |
+| Actual paper colour/stock cannot be detected | INFO | Trust explicit configured paper profile; do not invent sensor knowledge | No |
 | Duplex unsupported | INFO | Use single-sided fallback | No, unless user required duplex |
 | Email fallback unavailable | FAILED delivery | Preserve edition locally; try later channels if configured | Yes |
 | Travel state uncertain | INFO | Default conservatively according to user policy | Only if it changes delivery decision |
 | Secret/token expired | DEGRADED/FAILED | Disable affected connector | Yes, with remediation |
+| Duplicate/retried scheduled run detected | INFO | Reuse/resume the edition state and suppress duplicate print submission unless explicitly reprinted | No, unless intervention is required |
 | Archive write failure | FAILED | Do not silently discard edition state | Yes |
 
 ## Error message style
