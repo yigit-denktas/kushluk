@@ -49,6 +49,8 @@ Do not silently reinterpret a recorded decision. Propose a new ADR when changing
 Use vertical slices. Prefer a working bicycle over disconnected car parts.
 
 For each stage:
+- proceed autonomously on reversible work that does not require a genuine product decision, credentials, or physical access;
+- keep repository state clean and avoid abandoned active branches/PRs;
 - state the user-visible outcome;
 - define acceptance criteria;
 - implement the smallest end-to-end path;
