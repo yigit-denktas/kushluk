@@ -12,14 +12,21 @@ The canonical edition is **four logical DIN A4 pages**, designed as one bounded 
 
 ## Primary experience
 
+The intended experience is a **morning ritual, not a dashboard session**. When the configured environment allows it, Kuşluk should already be generated and physically available around wake-up/breakfast time, with minimal screen interaction.
+
 By the configured morning deadline, default 08:00 local time:
 
 - if the user is home and printing is healthy, produce the physical edition;
 - if printing is unavailable, fail visibly and deliver the edition digitally;
 - if the user is travelling, avoid wasting paper and deliver the edition digitally;
-- adapt weather and relevant context to the travel destination when reliable context exists.
+- adapt weather and relevant context to the travel destination when reliable context exists;
+- allow the user to pick up and optionally staple the A4-home edition, or simply fold/use the A3 edition.
 
 The edition should establish **Today** early: stable commitments and immediate orientation receive priority. The remaining page budget can shift toward **For You** material: editorially selected stories, language material, personal columns, and serendipity. The exact page archetype may vary; the logical four-page geometry does not.
+
+## Brand idea
+
+The product direction is summarized by the idea: **“The internet has already been filtered. You can stop scrolling.”** It is a statement of product intent rather than required printed copy.
 
 ## Why print
 
