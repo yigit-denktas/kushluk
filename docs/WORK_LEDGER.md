@@ -85,6 +85,7 @@ Workflow tools such as n8n, Apple Shortcuts, systemd/cron, launchd, or a future 
 - [ ] **AUT-10** Add recovery semantics so a failed print never causes editorial regeneration unless explicitly requested.
 - [ ] **AUT-11 (RESEARCH)** Test wake-up, local-host-availability, and printer-reachability triggers as optional release signals without weakening the configured deadline.
 - [ ] **AUT-12** Keep exact pipeline start time adaptive/configurable; an earlier ~07:30 idea is only a scheduling heuristic for an 08:00-ready edition.
+- [ ] **AUT-13 (RESEARCH)** Test driverless/network CUPS/IPP from the chosen local/home-server deployment, including containerised operation only if it simplifies printer reachability rather than complicating it.
 
 ### P1 — Source acquisition and editorial input
 
